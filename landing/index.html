@@ -1412,9 +1412,9 @@
 			function demoUrl(r) {
 				return base + "app/?demo=1&as=" + r;
 			}
-			function runDemo(r) {
+			// Memuat aplikasi demo ke dalam bingkai ponsel (tanpa mengubah tab yang sedang dibuka).
+			function loadFrame(r) {
 				role = r;
-				showTab("live");
 				var frame = document.querySelector(".frame");
 				var f = frame.querySelector("iframe");
 				if (!f) {
@@ -1427,7 +1427,36 @@
 				if (idle) idle.style.display = "none";
 				f.src = demoUrl(r);
 				document.getElementById("full").href = demoUrl(r);
+				document.querySelectorAll("[data-run]").forEach(function (b) {
+					b.classList.toggle("ghost", b.dataset.run !== r);
+				});
 			}
+			function runDemo(r) {
+				showTab("live");
+				loadFrame(r);
+			}
+			// Demo langsung tampil tanpa perlu klik: dimuat otomatis (peran Karyawan) begitu bagian demo
+			// hampir terlihat, supaya halaman awal tetap ringan. Tombol peran tetap bisa dipakai untuk berganti.
+			(function () {
+				var frame = document.querySelector(".frame"),
+					done = false;
+				function auto() {
+					if (done) return;
+					done = true;
+					if (!frame.querySelector("iframe")) loadFrame("employee");
+				}
+				if ("IntersectionObserver" in window) {
+					new IntersectionObserver(
+						function (es, ob) {
+							if (es[0].isIntersecting) {
+								auto();
+								ob.disconnect();
+							}
+						},
+						{ rootMargin: "600px 0px" },
+					).observe(frame);
+				} else auto();
+			})();
 			document.querySelectorAll("[data-run]").forEach(function (b) {
 				b.addEventListener("click", function () {
 					runDemo(b.dataset.run);
