@@ -761,6 +761,29 @@
 					display: none;
 				}
 			}
+			/* Kartu fitur: 2 kolom di HP */
+			@media (max-width: 600px) {
+				#fitur .grid {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+					gap: 10px;
+				}
+				#fitur .grid .card {
+					padding: 14px;
+					border-radius: 14px;
+					overflow-wrap: anywhere;
+				}
+				#fitur .grid .ico {
+					font-size: 24px;
+				}
+				#fitur .grid .card h3 {
+					font-size: 14.5px;
+					line-height: 1.3;
+				}
+				#fitur .grid .card p {
+					font-size: 12.5px;
+					line-height: 1.5;
+				}
+			}
 		</style>
 	</head>
 	<body>
@@ -839,7 +862,7 @@
 				<div class="center">
 					<h2>Semua yang dibutuhkan HR & operasional</h2>
 					<p class="sub">
-						Dari absen harian sampai pengiriman kendaraan - tanpa spreadsheet,
+						Dari absen harian sampai pengiriman kendaraan — tanpa spreadsheet,
 						tanpa titip absen.
 					</p>
 				</div>
@@ -1132,7 +1155,8 @@
 						border-radius: 10px;
 						padding: 3px 10px;
 					"
-				/>© <span id="yr"></span> Velano - Absensi & tracking karyawan. ·
+				/>© <span id="yr"></span> Velano — Absensi & tracking karyawan. ·
+				<a data-app="admin/auth/login">Login Admin</a>
 			</div>
 		</footer>
 
@@ -1140,7 +1164,7 @@
 			// Sesuaikan saat hosting: APP_URL = alamat backend Velano bila landing page ini diletakkan di domain/folder lain
 			// (mis. "https://absen.domain.com"). Kosong = otomatis memakai alamat yang sama dengan halaman ini.
 			// WA_NUMBER = nomor WhatsApp penjualan (format 62812...). Kosong = tombol menuju halaman info (/daftar).
-			// PRICE = harga per karyawan per bulan (rupiah) - dipakai semua teks harga & kalkulator di halaman ini.
+			// PRICE = harga per karyawan per bulan (rupiah) — dipakai semua teks harga & kalkulator di halaman ini.
 			var APP_URL = "",
 				WA_NUMBER = "",
 				PRICE = 5000;
@@ -1171,8 +1195,8 @@
 			// Bahasa sumber = Indonesia. Teks bahasa Inggris ada di kamus EN (kunci = teks Indonesia persis).
 			// Tambah teks baru: tulis dalam bahasa Indonesia di HTML, lalu tambahkan pasangannya di EN.
 			var EN = {
-				"Velano - Absensi GPS & Tracking Karyawan | Mulai Rp5.000 per karyawan":
-					"Velano - GPS Attendance & Employee Tracking | From Rp5,000 per employee",
+				"Velano — Absensi GPS & Tracking Karyawan | Mulai Rp5.000 per karyawan":
+					"Velano — GPS Attendance & Employee Tracking | From Rp5,000 per employee",
 				"Absensi selfie + GPS, tracking real-time, multi-kantor, shift, dan laporan otomatis. Mulai Rp5.000 per karyawan per bulan. Coba demo aplikasi atau minta uji coba 14 hari.":
 					"Selfie + GPS attendance, real-time tracking, multi-office, shifts, and automated reports. From Rp5,000 per employee per month. Try the app demo or request a 14-day trial.",
 				Fitur: "Features",
@@ -1197,8 +1221,8 @@
 				"Absen Masuk": "Check In",
 				"Semua yang dibutuhkan HR & operasional":
 					"Everything HR and operations need",
-				"Dari absen harian sampai pengiriman kendaraan - tanpa spreadsheet, tanpa titip absen.":
-					"From daily attendance to vehicle delivery - no spreadsheets, no buddy punching.",
+				"Dari absen harian sampai pengiriman kendaraan — tanpa spreadsheet, tanpa titip absen.":
+					"From daily attendance to vehicle delivery — no spreadsheets, no buddy punching.",
 				"Foto dan koordinat tersimpan. Jarak dihitung ulang di server, bukan hanya di HP.":
 					"Photo and coordinates are saved. Distance is recalculated on the server, not just on the phone.",
 				"Tracking real-time": "Real-time tracking",
@@ -1292,8 +1316,8 @@
 					"Try the demo now, or request your company account. Free 14-day trial, no credit card.",
 				"Minta Akses Perusahaan →": "Request Company Access →",
 				"Coba Demo Aplikasi": "Try the App Demo",
-				"Velano - Absensi & tracking karyawan. ·":
-					"Velano - Employee attendance and tracking. ·",
+				"Velano — Absensi & tracking karyawan. ·":
+					"Velano — Employee attendance and tracking. ·",
 				"Login Admin": "Admin Login",
 				"Coba demo aplikasi": "Try the app demo",
 				"Jumlah karyawan": "Number of employees",
@@ -1303,14 +1327,14 @@
 				Izin: "Permission",
 				Alfa: "Absent",
 				"Belum absen": "Not yet checked in",
-				"✕ Di luar radius - absen akan ditolak server":
-					"✕ Outside radius - the server will reject the check-in",
+				"✕ Di luar radius — absen akan ditolak server":
+					"✕ Outside radius — the server will reject the check-in",
 				"📍 GPS diterima: akurasi 8 m": "📍 GPS received: accuracy 8 m",
 				"🤳 Selfie diunggah": "🤳 Selfie uploaded",
 				"🧮 Server menghitung jarak (Haversine): <b>{v} m</b> dari titik kantor":
 					"🧮 Server calculates the distance (Haversine): <b>{v} m</b> from the office point",
-				"<b style='color:var(--ok)'>✅ Absen masuk tercatat pukul {t}</b> - langsung muncul di panel admin":
-					"<b style='color:var(--ok)'>✅ Check-in recorded at {t}</b> - appears in the admin panel right away",
+				"<b style='color:var(--ok)'>✅ Absen masuk tercatat pukul {t}</b> — langsung muncul di panel admin":
+					"<b style='color:var(--ok)'>✅ Check-in recorded at {t}</b> — appears in the admin panel right away",
 				"<b style='color:var(--bad)'>⛔ Ditolak:</b> jarak {v} m melebihi radius 50 m. Tidak ada data yang tersimpan.":
 					"<b style='color:var(--bad)'>⛔ Rejected:</b> distance {v} m exceeds the 50 m radius. No data was saved.",
 				"Halo, saya tertarik berlangganan Velano":
@@ -1442,7 +1466,7 @@
 				dot.classList.toggle("far", far);
 				st.className = "status " + (far ? "bad" : "ok");
 				st.textContent = far
-					? t("✕ Di luar radius - absen akan ditolak server")
+					? t("✕ Di luar radius — absen akan ditolak server")
 					: t("✓ Dalam radius (maks. 50 m)");
 			}
 			sl.addEventListener("input", upd);
@@ -1462,7 +1486,7 @@
 				steps.push(
 					ok
 						? tf(
-								"<b style='color:var(--ok)'>✅ Absen masuk tercatat pukul {t}</b> - langsung muncul di panel admin",
+								"<b style='color:var(--ok)'>✅ Absen masuk tercatat pukul {t}</b> — langsung muncul di panel admin",
 								{ t: t_ },
 							)
 						: tf(
@@ -1492,7 +1516,7 @@
 						["Ahmad", "Surabaya", "07:52", "12 m", ""],
 						["Citra", "Mojokerto", "08:14", "9 m", "l"],
 						["Deni", "Gresik", "07:58", "21 m", ""],
-						["Rina", "Surabaya", "-", "-", "n"],
+						["Rina", "Surabaya", "—", "—", "n"],
 					],
 				},
 				{
