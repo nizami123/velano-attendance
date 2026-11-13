@@ -1,0 +1,95 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Admin_attendance_model extends CI_Model
+{
+    /**
+     * $filters keys (all optional except where noted):
+     *   date, office_id, employee_id, status
+     * $officeId: ADMIN_KANTOR scope (null for SUPER_ADMIN = no restriction).
+     */
+    private function baseQuery(array $filters, $officeId)
+    {
+        $this->db->select("
+                attendances.*,
+                employees.name as employee_name,
+                employees.employee_code,
+                employees.nip,
+                offices.name as office_name,
+                offices.timezone as office_timezone,
+                (SELECT GROUP_CONCAT(CONCAT(TIME_FORMAT(r.time, '%H:%i'), '-', TIME_FORMAT(r.end_time, '%H:%i')) ORDER BY r.time SEPARATOR ', ') FROM attendance_requests r WHERE r.type = 'OVERTIME' AND r.status = 'APPROVED' AND r.employee_id = attendances.employee_id AND r.date = attendances.attendance_date) as overtime_label,
+                (SELECT COUNT(*) FROM attendance_tracking WHERE attendance_tracking.employee_id = attendances.employee_id AND attendance_tracking.recorded_at >= attendances.attendance_date AND attendance_tracking.recorded_at < DATE_ADD(attendances.attendance_date, INTERVAL 1 DAY)) as tracking_count
+            ", false)
+            ->from('attendances')
+            ->join('employees', 'employees.id = attendances.employee_id')
+            ->join('offices', 'offices.id = attendances.office_id');
+
+        if (!empty($filters['date'])) {
+            $this->db->where('attendances.attendance_date', $filters['date']);
+        }
+        if (!empty($filters['office_id'])) {
+            $this->db->where('attendances.office_id', (int) $filters['office_id']);
+        }
+        if (!empty($filters['employee_id'])) {
+            $this->db->where('attendances.employee_id', (int) $filters['employee_id']);
+        }
+        if (!empty($filters['status'])) {
+            $this->db->where('attendances.status', $filters['status']);
+        }
+        // ADMIN_KANTOR scope always wins over anything a client sends,
+        // even if they somehow post a different office_id.
+        scope_where($this->db, 'attendances.office_id', $officeId);
+
+        return $this->db;
+    }
+
+    public function countFiltered(array $filters, $officeId): int
+    {
+        return (int) $this->baseQuery($filters, $officeId)->count_all_results();
+    }
+
+    public function countAll($officeId): int
+    {
+        $q = $this->db->from('attendances');
+        scope_where($q, 'office_id', $officeId);
+        return (int) $q->count_all_results();
+    }
+
+    public function getPage(array $filters, $officeId, int $start, int $length, string $orderCol, string $orderDir): array
+    {
+        $q = $this->baseQuery($filters, $officeId)
+            ->order_by($orderCol, $orderDir);
+        if ($length > 0) $q->limit($length, $start);
+        return $q->get()->result_array();
+    }
+
+    public function getOptionsForFilter($officeId): array
+    {
+        $q = $this->db->select('id, name, employee_code')->where_in('role', array('EMPLOYEE', 'DRIVER'))->order_by('name', 'ASC');
+        scope_where($q, 'office_id', $officeId);
+        return $q->get('employees')->result_array();
+    }
+
+    // ------------------------------------------------------------------
+    // Dipakai oleh fitur Sync (Employees::sync)
+    // ------------------------------------------------------------------
+
+    public function getByEmployeeDate(int $employeeId, string $date)
+    {
+        return $this->db->where('employee_id', $employeeId)
+            ->where('attendance_date', $date)
+            ->get('attendances')
+            ->row_array();
+    }
+
+    public function insertSynced(array $data): int
+    {
+        $this->db->insert('attendances', $data);
+        return (int) $this->db->insert_id();
+    }
+
+    public function updateSynced(int $id, array $data): void
+    {
+        $this->db->where('id', $id)->update('attendances', $data);
+    }
+}

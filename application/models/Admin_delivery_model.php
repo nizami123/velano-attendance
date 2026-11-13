@@ -1,0 +1,124 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Admin_delivery_model extends CI_Model
+{
+    /**
+     * $officeId scopes by the DRIVER's home office (employees.office_id)
+     * — same convention as the dashboard stat, see Admin_dashboard_model.
+     * "Kantor Tujuan" is a separate, independent filter field
+     * ($filters['destination_office_id']), not the scoping boundary.
+     */
+    private function baseQuery(array $filters, $officeId)
+    {
+        $this->db->select("
+                vehicle_deliveries.*,
+                employees.name as driver_name,
+                employees.employee_code as driver_code,
+                dest.name as destination_office_name,
+                driver_office.name as driver_office_name,
+                driver_office.code as driver_office_code, driver_office.timezone as driver_office_timezone
+            ")
+            ->from('vehicle_deliveries')
+            ->join('employees', 'employees.id = vehicle_deliveries.driver_id')
+            ->join('offices as dest', 'dest.id = vehicle_deliveries.destination_office_id', 'left')
+            ->join('offices as driver_office', 'driver_office.id = employees.office_id', 'left');
+
+        if (!empty($filters['date_from'])) {
+            $this->db->where('DATE(vehicle_deliveries.created_at) >=', $filters['date_from']);
+        }
+        if (!empty($filters['date_to'])) {
+            $this->db->where('DATE(vehicle_deliveries.created_at) <=', $filters['date_to']);
+        }
+        if (!empty($filters['driver_id'])) {
+            $this->db->where('vehicle_deliveries.driver_id', (int) $filters['driver_id']);
+        }
+        if (!empty($filters['destination_office_id'])) {
+            $this->db->where('vehicle_deliveries.destination_office_id', (int) $filters['destination_office_id']);
+        }
+        if (!empty($filters['status'])) {
+            $this->db->where('vehicle_deliveries.status', $filters['status']);
+        }
+        scope_where($this->db, 'employees.office_id', $officeId);
+
+        return $this->db;
+    }
+
+    public function countFiltered(array $filters, $officeId): int
+    {
+        return (int) $this->baseQuery($filters, $officeId)->count_all_results();
+    }
+
+    public function countAll($officeId): int
+    {
+        $this->db->from('vehicle_deliveries');
+        if (!scope_is_all($officeId)) {
+            $this->db->join('employees', 'employees.id = vehicle_deliveries.driver_id');
+            scope_where($this->db, 'employees.office_id', $officeId);
+        }
+        return (int) $this->db->count_all_results();
+    }
+
+    public function getPage(array $filters, $officeId, int $start, int $length, string $orderCol, string $orderDir): array
+    {
+        $q = $this->baseQuery($filters, $officeId)->order_by($orderCol, $orderDir);
+        if ($length > 0) $q->limit($length, $start);
+        return $q->get()->result_array();
+    }
+
+    public function getById(int $id, $officeId)
+    {
+        // NOTE: destination_latitude/longitude/radius are NOT re-aliased
+        // from the joined office here — vehicle_deliveries.* already
+        // carries the authoritative values (denormalized at "Mulai
+        // Pengiriman" time, whether the destination was a registered
+        // office or a custom one), and aliasing dest.* over the top
+        // would silently overwrite/null them out for custom destinations.
+        // dest.name/address are only for admin display of which
+        // registered office was linked, when applicable.
+        $this->db->select("
+                vehicle_deliveries.*,
+                employees.name as driver_name,
+                employees.employee_code as driver_code,
+                employees.phone as driver_phone,
+                dest.name as destination_office_name,
+                dest.address as destination_office_address,
+                driver_office.name as driver_office_name,
+                driver_office.code as driver_office_code, driver_office.timezone as driver_office_timezone
+            ")
+            ->from('vehicle_deliveries')
+            ->join('employees', 'employees.id = vehicle_deliveries.driver_id')
+            ->join('offices as dest', 'dest.id = vehicle_deliveries.destination_office_id', 'left')
+            ->join('offices as driver_office', 'driver_office.id = employees.office_id', 'left')
+            ->where('vehicle_deliveries.id', $id);
+        scope_where($this->db, 'employees.office_id', $officeId);
+        return $this->db->get()->row_array();
+    }
+
+    public function getDriverOptions($officeId): array
+    {
+        $q = $this->db->select('id, name, employee_code')->where('role', 'DRIVER')->order_by('name', 'ASC');
+        scope_where($q, 'office_id', $officeId);
+        return $q->get('employees')->result_array();
+    }
+
+    /**
+     * Admin melengkapi titik koordinat (lat/lng) untuk tujuan bebas
+     * (driver hanya menulis alamat lengkap saat "Mulai Pengiriman",
+     * tanpa geocoding di HP) — titik ini yang dipakai sebagai patokan
+     * radius kedatangan ("Selesaikan Pengiriman") begitu tersimpan.
+     * Radius opsional: kalau tidak diisi, radius yang sudah ada
+     * (default 100 m) tetap dipakai.
+     */
+    public function updateDestinationPoint(int $id, float $lat, float $lng, ?int $radius): void
+    {
+        $data = array(
+            'destination_latitude'  => $lat,
+            'destination_longitude' => $lng,
+        );
+        if ($radius !== null) {
+            $data['destination_radius'] = $radius;
+        }
+        $this->db->where('id', $id)->update('vehicle_deliveries', $data);
+    }
+}

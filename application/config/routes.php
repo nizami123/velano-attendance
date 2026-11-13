@@ -1,0 +1,100 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/*
+| -------------------------------------------------------------------------
+| URI ROUTING
+| -------------------------------------------------------------------------
+| This file lets you re-map URI requests to specific controller functions.
+|
+| Typically there is a one-to-one relationship between a URL string
+| and its corresponding controller class/method. The segments in a
+| URL normally follow this pattern:
+|
+|	example.com/class/method/id/
+|
+| In some instances, however, you may want to remap this relationship
+| so that a different class/function is called than the one
+| corresponding to the URL.
+|
+| Please see the user guide for complete details:
+|
+|	https://codeigniter.com/userguide3/general/routing.html
+|
+| -------------------------------------------------------------------------
+| RESERVED ROUTES
+| -------------------------------------------------------------------------
+|
+| There are three reserved routes:
+|
+|	$route['default_controller'] = 'welcome';
+|
+| This route indicates which controller class should be loaded if the
+| URI contains no data. In the above example, the "welcome" class
+| would be loaded.
+|
+|	$route['404_override'] = 'errors/page_missing';
+|
+| This route will tell the Router which controller/method to use if those
+| provided in the URL cannot be matched to a valid route.
+|
+|	$route['translate_uri_dashes'] = FALSE;
+|
+| This is not exactly a route, but allows you to automatically route
+| controller and method names that contain dashes. '-' isn't a valid
+| class or method name character, so it requires translation.
+| When you set this option to TRUE, it will replace ALL dashes in the
+| controller and method URI segments.
+|
+| Examples:	my-controller/index	-> my_controller/index
+|		my-controller/my-method	-> my_controller/my_method
+*/
+$route['default_controller'] = 'welcome';
+$route['404_override'] = '';
+$route['translate_uri_dashes'] = FALSE;
+
+// --- Pendaftaran mandiri perusahaan (coba gratis) ---
+// --- Ganti bahasa (ID / EN) ---
+$route['lang/(:any)'] = 'lang/set/$1';
+
+// --- Super Global Admin (pemilik layanan) ---
+$route['platform'] = 'platform/companies';
+
+$route['daftar']  = 'register';
+$route['register'] = 'register';
+
+// --- Auth ---
+$route['api/auth/login']['post'] = 'api/auth/login';
+$route['api/auth/change-password']['post'] = 'api/auth/change_password';
+
+// --- Offices ---
+$route['api/offices']['get'] = 'api/offices/index';
+
+// --- Employees ---
+$route['api/employees/me']['get'] = 'api/employees/me';
+
+// --- Attendance ---
+$route['api/attendance/check-in']['post']  = 'api/attendance/check_in';
+$route['api/attendance/check-out']['post'] = 'api/attendance/check_out';
+$route['api/attendance/today']['get']      = 'api/attendance/today';
+$route['api/attendance/history']['get']    = 'api/attendance/history';
+
+// --- Shifts (jadwal shift karyawan; read-only, tidak mempengaruhi absensi) ---
+$route['api/shifts/my']['get'] = 'api/shifts/my';
+
+// --- Tracking ---
+$route['api/tracking/sync']['post']        = 'api/tracking/sync';
+
+// --- Requests (pengajuan) ---
+$route['api/requests']['post'] = 'api/requests/create';
+$route['api/requests']['get']  = 'api/requests/index';
+
+// --- Deliveries (Pengiriman Kendaraan — role DRIVER) ---
+$route['api/deliveries/start']['post']    = 'api/deliveries/start';
+$route['api/deliveries/complete']['post'] = 'api/deliveries/complete';
+$route['api/deliveries/active']['get']    = 'api/deliveries/active';
+$route['api/deliveries/history']['get']   = 'api/deliveries/history';
+
+$route['api/delivery-tracking/sync']['post']  = 'api/delivery_tracking/sync';
+$route['api/delivery-tracking/(:num)']['get'] = 'api/delivery_tracking/for_delivery/$1';
+

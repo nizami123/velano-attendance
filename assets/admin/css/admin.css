@@ -1,0 +1,370 @@
+:root {
+	/* Primary brand green — matches the Velano logo */
+	--at-primary: #048f38;
+	--at-primary-dark: #026530;
+	--at-primary-light: #e3f3e8;
+	--at-white: #ffffff;
+	--at-gray: #8a8f98;
+	--at-gray-dark: #4a4f58;
+	--at-light-gray: #f1f3f5;
+	--at-border: #e5e8eb;
+	--at-red: #e53935;
+	--at-red-light: #fdecea;
+	/* Semantic success color (approved/present badges) — kept green on
+       purpose, independent of the brand primary color above, since
+       green-for-success is a separate UI convention. */
+	--at-green: #048f38;
+	--at-green-light: #e3f3e8;
+	--at-orange: #f5a623;
+	--at-orange-light: #fef3e0;
+	--at-blue: #0f766e; /* teal-hijau (status "dalam perjalanan") */
+	--at-blue-light: #d8f3ee;
+	--sidebar-width: 260px;
+}
+
+body {
+	background-color: var(--at-light-gray);
+	font-family:
+		-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+		sans-serif;
+	color: #1a1a1a;
+}
+
+/* ---------- Topbar ---------- */
+.at-topbar {
+	height: 64px;
+	background: var(--at-white);
+	border-bottom: 1px solid var(--at-border);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 20px;
+	position: sticky;
+	top: 0;
+	z-index: 1020;
+}
+
+.at-topbar .brand {
+	font-weight: 700;
+	color: var(--at-primary);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.at-topbar .brand .brand-icon {
+	width: 58px;
+	height: 50px;
+	background: transparent;
+	border: 0;
+	color: #fff;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ---------- Sidebar ---------- */
+.at-sidebar {
+	width: var(--sidebar-width);
+	background: var(--at-white);
+	border-right: 1px solid var(--at-border);
+}
+
+.at-sidebar .nav-section-title {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	color: var(--at-gray);
+	padding: 18px 18px 6px;
+	text-transform: uppercase;
+}
+
+.at-sidebar .nav-link {
+	color: var(--at-gray-dark);
+	padding: 10px 18px;
+	border-radius: 10px;
+	margin: 2px 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 14px;
+}
+
+.at-sidebar .nav-link i {
+	font-size: 18px;
+	width: 20px;
+	text-align: center;
+}
+
+.at-sidebar .nav-link:hover {
+	background: var(--at-green-light);
+	color: var(--at-primary);
+}
+
+.at-sidebar .nav-link.active {
+	background: var(--at-primary);
+	color: #fff;
+}
+
+/* ---------- Layout wrapper ---------- */
+.at-layout {
+	display: flex;
+	min-height: 100vh;
+}
+
+.at-main {
+	flex: 1;
+	min-width: 0;
+}
+
+.at-content {
+	padding: 24px;
+}
+
+@media (max-width: 991.98px) {
+	.at-content {
+		padding: 16px;
+	}
+}
+
+/* ---------- Cards ---------- */
+.at-card {
+	background: var(--at-white);
+	border: 1px solid var(--at-border);
+	border-radius: 14px;
+	padding: 18px;
+}
+
+.at-stat-card {
+	background: var(--at-white);
+	border: 1px solid var(--at-border);
+	border-radius: 14px;
+	padding: 18px;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.at-stat-card .icon-box {
+	width: 46px;
+	height: 46px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 20px;
+	flex-shrink: 0;
+}
+
+.at-stat-card .stat-value {
+	font-size: 22px;
+	font-weight: 700;
+	line-height: 1.1;
+}
+
+.at-stat-card .stat-label {
+	font-size: 12.5px;
+	color: var(--at-gray);
+}
+
+.bg-icon-green {
+	background: var(--at-green-light);
+	color: var(--at-primary);
+}
+.bg-icon-orange {
+	background: var(--at-orange-light);
+	color: var(--at-orange);
+}
+.bg-icon-blue {
+	background: var(--at-blue-light);
+	color: var(--at-blue);
+}
+.bg-icon-red {
+	background: var(--at-red-light);
+	color: var(--at-red);
+}
+
+/* ---------- Badges ---------- */
+.badge-at {
+	font-size: 11.5px;
+	font-weight: 600;
+	padding: 5px 10px;
+	border-radius: 20px;
+}
+.badge-at-green {
+	background: var(--at-green-light);
+	color: var(--at-green);
+}
+.badge-at-orange {
+	background: var(--at-orange-light);
+	color: var(--at-orange);
+}
+.badge-at-red {
+	background: var(--at-red-light);
+	color: var(--at-red);
+}
+.badge-at-gray {
+	background: var(--at-light-gray);
+	color: var(--at-gray-dark);
+}
+.badge-at-blue {
+	background: var(--at-blue-light);
+	color: var(--at-blue);
+}
+
+/* ---------- Buttons ---------- */
+.btn-at-primary {
+	background: var(--at-primary);
+	border-color: var(--at-primary);
+	color: #fff;
+}
+.btn-at-primary:hover {
+	background: var(--at-primary-dark);
+	border-color: var(--at-primary-dark);
+	color: #fff;
+}
+.btn-outline-at-primary {
+	border-color: var(--at-primary);
+	color: var(--at-primary);
+}
+.btn-outline-at-primary:hover {
+	background: var(--at-primary);
+	color: #fff;
+}
+
+/* ---------- Tables ---------- */
+.table-at thead th {
+	background: var(--at-light-gray);
+	color: var(--at-gray-dark);
+	font-size: 12.5px;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	border-bottom: none;
+	white-space: nowrap;
+}
+.table-at td {
+	vertical-align: middle;
+	font-size: 13.5px;
+}
+
+/* ---------- Login page ---------- */
+.at-login-wrap {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(
+		180deg,
+		var(--at-primary) 0%,
+		var(--at-primary) 220px,
+		var(--at-light-gray) 220px
+	);
+	padding: 20px;
+}
+.at-login-card {
+	width: 100%;
+	max-width: 400px;
+	background: #fff;
+	border-radius: 18px;
+	padding: 32px 28px;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+}
+.at-login-logo {
+	width: 150px;
+	height: 128px;
+	border-radius: 0;
+	background: transparent;
+	color: var(--at-primary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 28px;
+	margin: 0 auto 14px;
+}
+
+/* ---------- Map ---------- */
+.at-map {
+	width: 100%;
+	height: 480px;
+	border-radius: 14px;
+	border: 1px solid var(--at-border);
+}
+.at-map-sm {
+	width: 100%;
+	height: 320px;
+	border-radius: 14px;
+	border: 1px solid var(--at-border);
+}
+
+/* ---------- Misc ---------- */
+.text-gray {
+	color: var(--at-gray) !important;
+}
+.avatar-circle {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: var(--at-light-gray);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	color: var(--at-gray-dark);
+	flex-shrink: 0;
+}
+
+.modal-content > form {
+	display: contents;
+}
+
+/* ---------- Velano: override Bootstrap default blue with brand green ---------- */
+:root {
+	--bs-primary: #048f38;
+	--bs-primary-rgb: 19, 137, 63;
+	--bs-link-color: #048f38;
+	--bs-link-color-rgb: 19, 137, 63;
+	--bs-link-hover-color: #026530;
+	--bs-link-hover-color-rgb: 10, 90, 45;
+	--bs-focus-ring-color: rgba(4, 143, 56, 0.25);
+}
+.form-control:focus,
+.form-select:focus {
+	border-color: #5fb27a;
+	box-shadow: 0 0 0 0.25rem rgba(4, 143, 56, 0.2);
+}
+.form-check-input:checked {
+	background-color: #048f38;
+	border-color: #048f38;
+}
+.page-link { color: #048f38; }
+.page-item.active .page-link {
+	background-color: #048f38;
+	border-color: #048f38;
+	color: #fff;
+}
+.btn-primary {
+	--bs-btn-bg: #048f38;
+	--bs-btn-border-color: #048f38;
+	--bs-btn-hover-bg: #026530;
+	--bs-btn-hover-border-color: #026530;
+	--bs-btn-active-bg: #026530;
+	--bs-btn-active-border-color: #026530;
+}
+.btn-outline-primary {
+	--bs-btn-color: #048f38;
+	--bs-btn-border-color: #048f38;
+	--bs-btn-hover-bg: #048f38;
+	--bs-btn-hover-border-color: #048f38;
+	--bs-btn-active-bg: #048f38;
+	--bs-btn-active-border-color: #048f38;
+}
+.text-primary { color: #048f38 !important; }
+.bg-primary { background-color: #048f38 !important; }
+.badge-at-gold, .at-accent { color: #49d82c; }
+
+/* Tombol ganti bahasa ID | EN */
+.at-lang { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 700; background: var(--at-light-gray, #f3f5f4); border-radius: 999px; padding: 3px 6px; color: #5b6b62; }
+.at-lang i { margin-right: 3px; }
+.at-lang a { color: inherit; text-decoration: none; padding: 2px 8px; border-radius: 999px; }
+.at-lang a.active { background: var(--at-primary, #048F38); color: #fff; }
