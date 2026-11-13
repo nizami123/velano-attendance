@@ -6,9 +6,7 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1, viewport-fit=cover"
 		/>
-		<title>
-			Velano — Absensi GPS & Tracking Karyawan | Mulai Rp5.000 per karyawan
-		</title>
+		<title>Velano</title>
 		<meta
 			name="description"
 			content="Absensi selfie + GPS, tracking real-time, multi-kantor, shift, dan laporan otomatis. Mulai Rp5.000 per karyawan per bulan. Coba demo aplikasi atau minta uji coba 14 hari."
@@ -659,6 +657,110 @@
 				background: linear-gradient(120deg, var(--brand), #026530);
 				color: #fff;
 			}
+			/* ===== Responsif HP ===== */
+			body {
+				overflow-x: clip;
+			}
+			.hero .wrap > *,
+			.live > *,
+			.demo > * {
+				min-width: 0;
+			}
+			.phone {
+				width: min(290px, 100%);
+			}
+			.frame {
+				width: min(330px, 100%);
+				height: auto;
+				aspect-ratio: 1 / 2;
+			}
+			@media (max-width: 860px) {
+				html {
+					scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 72px);
+				}
+				nav .wrap {
+					height: 64px;
+					gap: 10px;
+				}
+				.logo img {
+					height: 40px;
+				}
+				nav .links {
+					gap: 10px;
+				}
+				.hero {
+					padding: 36px 0 24px;
+				}
+				section {
+					padding: 44px 0;
+				}
+				.card {
+					padding: 18px;
+				}
+				.sub {
+					margin-bottom: 26px;
+				}
+			}
+			@media (max-width: 480px) {
+				.wrap {
+					padding: 0 16px;
+				}
+				nav .wrap {
+					height: 56px;
+				}
+				.logo img {
+					height: 30px;
+				}
+				nav .links .btn {
+					padding: 8px 12px !important;
+					font-size: 13px;
+				}
+				.lang button {
+					padding: 5px 9px;
+				}
+				h1 {
+					font-size: clamp(30px, 9vw, 36px);
+				}
+				.pill {
+					font-size: 12px;
+					line-height: 1.4;
+					border-radius: 16px;
+				}
+				.lead {
+					font-size: 16px;
+				}
+				.cta .btn {
+					flex: 1 1 100%;
+				}
+				.tab {
+					padding: 8px 14px;
+					font-size: 13px;
+				}
+				.frame {
+					border-width: 7px;
+					border-radius: 34px;
+				}
+				.kpi b {
+					font-size: 20px;
+				}
+				th,
+				td {
+					padding: 8px 6px;
+					white-space: nowrap;
+				}
+				.final {
+					padding: 36px 18px;
+					border-radius: 20px;
+				}
+				.est .big {
+					font-size: 28px;
+				}
+			}
+			@media (max-width: 380px) {
+				nav .links .btn {
+					display: none;
+				}
+			}
 		</style>
 	</head>
 	<body>
@@ -858,11 +960,7 @@
 					</div>
 				</div>
 
-				<div
-					class="demo"
-					id="pEmp"
-					style="grid-template-columns: 320px 1fr; display: none"
-				>
+				<div class="demo" id="pEmp" style="display: none">
 					<div class="card">
 						<div class="map">
 							<div class="zone"></div>
@@ -1504,11 +1602,12 @@
 				var n;
 				while ((n = w.nextNode())) {
 					if (n.__o === undefined) n.__o = n.nodeValue;
-					var core = n.__o.trim();
+					var raw = n.__o.trim(),
+						core = raw.replace(/\s+/g, " "); // teks yang terpotong baris di HTML tetap cocok dengan kamus
 					if (!core) continue;
 					var out =
 						l === "en" && EN[core] !== undefined
-							? n.__o.replace(core, EN[core])
+							? n.__o.replace(raw, EN[core])
 							: n.__o;
 					if (n.nodeValue !== out) n.nodeValue = out;
 				}
