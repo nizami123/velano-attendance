@@ -20,7 +20,7 @@ class Tracking extends MY_Controller
      *
      * A point is only reported back as synced (and only then does the
      * Android app stop retrying/uploading it) once the database insert
-     * for it has actually succeeded — see Tracking_model::insertBatch().
+     * for it has actually succeeded - see Tracking_model::insertBatch().
      */
     public function sync()
     {
@@ -60,7 +60,7 @@ class Tracking extends MY_Controller
 
         // insertBatch() actually inserts each row and returns only the
         // localIds that were confirmed saved (or already present) in the
-        // database — never assume success up front (see method docblock).
+        // database - never assume success up front (see method docblock).
         $syncedIds = $this->Tracking_model->insertBatch($rows);
 
         $this->json_response(array('success' => true, 'synced_ids' => $syncedIds), 200);
@@ -70,7 +70,7 @@ class Tracking extends MY_Controller
      * GET /api/tracking?date=YYYY-MM-DD
      * The authenticated employee's own tracking points for one date
      * (defaults to today in the employee's own WIB/WITA/WIT zone). employee_id always comes from the
-     * token — used by the Android tracking-detail screen.
+     * token - used by the Android tracking-detail screen.
      */
     public function index()
     {
@@ -91,7 +91,7 @@ class Tracking extends MY_Controller
      * recorded_at decides which DATE a point belongs to, so it must be a
      * real "Y-m-d H:i:s" timestamp. Anything missing/malformed falls
      * back to the server's own time in the employee's zone (WIB/WITA/WIT) rather than dropping the
-     * point — same "never lose a tracking point" rule as before.
+     * point - same "never lose a tracking point" rule as before.
      */
     private function normalizeRecordedAt($value, string $tz): string
     {

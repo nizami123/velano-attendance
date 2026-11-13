@@ -5,7 +5,7 @@ require_once APPPATH . 'core/MY_Controller.php';
 
 class Employees extends MY_Controller
 {
-    /** GET /api/employees/me — profile of the currently authenticated employee. */
+    /** GET /api/employees/me - profile of the currently authenticated employee. */
     public function me()
     {
         $employee = $this->require_auth();

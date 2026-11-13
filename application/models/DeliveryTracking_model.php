@@ -6,7 +6,7 @@ class DeliveryTracking_model extends CI_Model
     public function insertBatch(array $rows): void
     {
         if (empty($rows)) return;
-        // Same INSERT IGNORE pattern as Tracking_model — tolerates a
+        // Same INSERT IGNORE pattern as Tracking_model - tolerates a
         // point being re-sent after a flaky network ack without
         // duplicating rows (unique key: delivery_id + recorded_at).
         foreach ($rows as $row) {

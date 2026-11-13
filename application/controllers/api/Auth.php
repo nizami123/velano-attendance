@@ -44,7 +44,7 @@ class Auth extends MY_Controller
      * POST /api/auth/change-password
      * Employee-initiated password change (settings screen). Requires
      * the current password to be re-entered (never trust that a valid
-     * bearer token alone is enough to change credentials — a device
+     * bearer token alone is enough to change credentials - a device
      * left logged in shouldn't let anyone at it silently lock the real
      * owner out), and re-hashes the new one with the same bcrypt scheme
      * used at login (password_verify/password_hash are a matched pair).

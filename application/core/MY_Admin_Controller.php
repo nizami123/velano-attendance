@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Base controller for every application/controllers/admin/*.php file.
  *
  * Completely separate from MY_Controller (the JSON API base for the
- * Android app) — this one renders HTML views and authenticates via
+ * Android app) - this one renders HTML views and authenticates via
  * CodeIgniter's PHP session, not a bearer token. Both read from the
  * same `employees` table though.
  *
@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *    SUPER_ADMIN, or the list of office ids granted to the ADMIN_KANTOR
  *    (one or more, table admin_offices). Every
  *    admin model method that lists/filters data takes this value and
- *    applies it as a WHERE clause — so an ADMIN_KANTOR can never see
+ *    applies it as a WHERE clause - so an ADMIN_KANTOR can never see
  *    another office's data no matter what query string / form field
  *    they send (ids from the URL/POST are never trusted directly,
  *    per the project's existing security convention).
@@ -33,7 +33,7 @@ class MY_Admin_Controller extends CI_Controller
         $this->load->library('session');
         $this->load->helper(array('url', 'response', 'distance', 'scope'));
 
-        // Perbaikan: sama seperti MY_Controller — paksa session MySQL ke
+        // Perbaikan: sama seperti MY_Controller - paksa session MySQL ke
         // GMT+7 supaya NOW()/CURDATE() di raw SQL konsisten dengan
         // date_default_timezone_set('Asia/Jakarta') (dijalankan saat
         // helper 'response' di-load barusan) yang dipakai today_date()/
@@ -80,7 +80,7 @@ class MY_Admin_Controller extends CI_Controller
     /** @var array Perusahaan (tenant) milik admin yang login. */
     protected $company = null;
 
-    /** Id perusahaan admin yang login — SELALU dari session/DB, tidak pernah dari request. */
+    /** Id perusahaan admin yang login - SELALU dari session/DB, tidak pernah dari request. */
     protected function companyId(): int
     {
         return (int) $this->adminUser['company_id'];
@@ -92,7 +92,7 @@ class MY_Admin_Controller extends CI_Controller
     /**
      * int[] = SUPER_ADMIN: semua kantor milik perusahaannya (tabel offices.company_id).
      * int[] = ADMIN_KANTOR: daftar kantor yang diberikan SUPER_ADMIN (tabel
-     *         admin_offices — boleh lebih dari satu). Bila tabel belum ada /
+     *         admin_offices - boleh lebih dari satu). Bila tabel belum ada /
      *         belum diisi, jatuh ke kantor asal akun (perilaku lama).
      * Tidak pernah mengembalikan array kosong: bila benar-benar tidak ada
      * kantor, dikembalikan array(0) supaya tidak ada data yang cocok.
@@ -135,7 +135,7 @@ class MY_Admin_Controller extends CI_Controller
         return $this->officeScope();
     }
 
-    /** Daftar kantor (baris offices) yang boleh dilihat admin ini — untuk dropdown filter/form. */
+    /** Daftar kantor (baris offices) yang boleh dilihat admin ini - untuk dropdown filter/form. */
     protected function scopedOffices(): array
     {
         $this->load->model('Admin_office_model');
@@ -159,7 +159,7 @@ class MY_Admin_Controller extends CI_Controller
     {
         $data['admin'] = $this->adminUser;
         $data['activeMenu'] = $data['activeMenu'] ?? '';
-        // Always available to every view — avoids each view/controller
+        // Always available to every view - avoids each view/controller
         // needing to remember to pass these, and avoids ever calling
         // $this->someMethod() from inside a view file (views run inside
         // CI_Loader's scope in CI3, NOT the controller's, so that would
@@ -179,7 +179,7 @@ class MY_Admin_Controller extends CI_Controller
         $this->load->view('admin/layout/footer', $data);
     }
 
-    /** For AJAX endpoints (DataTables server-side, map data, polling) — consistent JSON shape. */
+    /** For AJAX endpoints (DataTables server-side, map data, polling) - consistent JSON shape. */
     protected function json($data, int $httpCode = 200): void
     {
         $this->output
@@ -191,7 +191,7 @@ class MY_Admin_Controller extends CI_Controller
     /**
      * Menambahkan kolom `tz_label` ("WIB"/"WITA"/"WIT") ke tiap baris,
      * berdasarkan kolom zona kantor KARYAWAN pada baris itu ($tzKey, mis.
-     * `office_timezone` dari offices.timezone) — jam yang tersimpan di
+     * `office_timezone` dari offices.timezone) - jam yang tersimpan di
      * database memakai zona karyawan tersebut (lihat response_helper.php).
      */
     protected function withTzLabel(array $rows, string $tzKey = 'office_timezone'): array

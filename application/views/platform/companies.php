@@ -85,7 +85,7 @@
     <p class="mb-2">Semua data <b id="dName"></b> (kantor, karyawan, absensi, tracking, pengajuan, pengiriman) akan <b>dihapus permanen</b> dan tidak bisa dikembalikan.</p>
     <p class="mb-2">Untuk melanjutkan, ketik kode perusahaan: <code id="dCode" class="fs-6"></code></p>
     <input type="hidden" id="dId"><input class="form-control" id="dConfirm" placeholder="Ketik kode di sini" autocomplete="off">
-    <p class="text-gray mt-2 mb-0">Ingin sementara saja? Gunakan tombol <b>Tangguhkan</b> — data tetap aman.</p>
+    <p class="text-gray mt-2 mb-0">Ingin sementara saja? Gunakan tombol <b>Tangguhkan</b> - data tetap aman.</p>
   </div>
   <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button><button class="btn btn-danger">Hapus Permanen</button></div>
 </form></div></div>
@@ -165,7 +165,7 @@ async function openForm(id) {
   $('mt').textContent = isNew ? 'Perusahaan Baru' : 'Edit Perusahaan';
   $('on').required = $('oe').required = $('op').required = isNew;
   $('opl').textContent = isNew ? 'Password awal *' : 'Reset password (opsional)';
-  $('ownerHint').textContent = isNew ? '— akun ini dipakai admin perusahaan untuk login' : '— kosongkan bila tidak diubah';
+  $('ownerHint').textContent = isNew ? '- akun ini dipakai admin perusahaan untuk login' : '- kosongkan bila tidak diubah';
   if (isNew) { f.plan.value = 'TRIAL'; planDefaults(); f.status.value = 'ACTIVE'; modal.show(); return; }
   const r = await (await fetch(U('detail/' + id))).json();
   if (!r.success) return toast(r.message || 'Gagal memuat');

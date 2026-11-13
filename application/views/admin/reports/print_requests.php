@@ -21,7 +21,7 @@
     <div class="no-print"><button onclick="window.print()">Cetak / Simpan sebagai PDF</button></div>
 
     <h2>Laporan Pengajuan</h2>
-    <p class="sub">Periode: <?= html_escape($filters['date_from']) ?> s/d <?= html_escape($filters['date_to']) ?> — dicetak <?= date('d F Y H:i') ?> WIB</p>
+    <p class="sub">Periode: <?= html_escape($filters['date_from']) ?> s/d <?= html_escape($filters['date_to']) ?> - dicetak <?= date('d F Y H:i') ?> WIB</p>
 
     <div class="summary">
         <div>Total<strong><?= $summary['total'] ?></strong></div>

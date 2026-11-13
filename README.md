@@ -1,4 +1,4 @@
-# Velano — Backend (CodeIgniter 3 + MySQL/MariaDB)
+# Velano - Backend (CodeIgniter 3 + MySQL/MariaDB)
 
 Backend REST API + panel admin web untuk aplikasi Android Velano. Melakukan
 **validasi lokasi absensi di server** (bukan hanya di Android) sesuai
@@ -6,7 +6,7 @@ spesifikasi, dan menyimpan semua data ke MySQL/MariaDB.
 
 ## 1. Yang perlu Anda siapkan sendiri
 
-Folder ini **bukan** instalasi CodeIgniter 3 yang lengkap — hanya
+Folder ini **bukan** instalasi CodeIgniter 3 yang lengkap - hanya
 file `application/` (controller, model, config, helper) yang perlu
 ditaruh di atas instalasi CI3 asli. Ini karena core framework CI3
 (folder `system/`) sebaiknya diunduh langsung dari sumber resmi, bukan
@@ -15,7 +15,7 @@ ditulis ulang manual.
 Langkah instalasi:
 
 1. Download CodeIgniter 3 dari https://codeigniter.com/download
-   (atau `composer create-project codeigniter4/appstarter` **tidak** —
+   (atau `composer create-project codeigniter4/appstarter` **tidak** -
    pastikan ambil **CodeIgniter 3.x**, bukan 4, karena strukturnya beda).
 2. Ekstrak, Anda akan dapat folder `system/`, `application/`, `index.php`, dll.
 3. **Timpa** folder `application/` bawaan dengan folder `application/` dari
@@ -38,23 +38,23 @@ Langkah instalasi:
 
 ## 1b. Peran & hak akses
 
-| Peran | Tabel | Login | Yang boleh dilihat / dikelola |
-|-------|-------|-------|-------------------------------|
-| **Super Global Admin** | `global_admins` (terpisah, 1 baris awal) | `/admin/auth/login` → `/platform/companies` | **Satu-satunya yang CRUD Master Perusahaan** (nama, kode, kontak, paket, kuota, masa aktif, status, Super Admin-nya). Tidak melihat data absensi perusahaan mana pun. |
-| **Super Admin** (per perusahaan) | `employees` (`SUPER_ADMIN`) | `/admin/auth/login` → `/admin/dashboard` | Semua kantor, admin, karyawan, shift, libur, laporan **milik perusahaannya saja**. Tidak bisa mengubah data perusahaan (paket/kuota/masa aktif). |
-| **Admin Kantor** | `employees` (`ADMIN_KANTOR`) + `admin_offices` | sama | Hanya kantor yang diberikan Super Admin (boleh >1). Tidak bisa Master Kantor / User Admin. |
-| Karyawan / Driver | `employees` | Aplikasi Android / PWA | Hanya datanya sendiri. |
+| Peran                            | Tabel                                          | Login                                       | Yang boleh dilihat / dikelola                                                                                                                                         |
+| -------------------------------- | ---------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Super Global Admin**           | `global_admins` (terpisah, 1 baris awal)       | `/admin/auth/login` → `/platform/companies` | **Satu-satunya yang CRUD Master Perusahaan** (nama, kode, kontak, paket, kuota, masa aktif, status, Super Admin-nya). Tidak melihat data absensi perusahaan mana pun. |
+| **Super Admin** (per perusahaan) | `employees` (`SUPER_ADMIN`)                    | `/admin/auth/login` → `/admin/dashboard`    | Semua kantor, admin, karyawan, shift, libur, laporan **milik perusahaannya saja**. Tidak bisa mengubah data perusahaan (paket/kuota/masa aktif).                      |
+| **Admin Kantor**                 | `employees` (`ADMIN_KANTOR`) + `admin_offices` | sama                                        | Hanya kantor yang diberikan Super Admin (boleh >1). Tidak bisa Master Kantor / User Admin.                                                                            |
+| Karyawan / Driver                | `employees`                                    | Aplikasi Android / PWA                      | Hanya datanya sendiri.                                                                                                                                                |
 
 **Akun awal Super Global Admin** (dibuat oleh `schema.sql`):
 
-| Email | Password |
-|-------|----------|
+| Email                   | Password          |
+| ----------------------- | ----------------- |
 | `superglobal@velano.id` | `SuperGlobal@123` |
 
 **Segera ganti** lewat tombol **Akun Saya** di panel. Lupa password? Jalankan di server:
 `php index.php tools reset_global_admin_password PasswordBaruMin8`
 
-**Alur berlangganan:** Super Global Admin → *Perusahaan Baru* (isi nama perusahaan, paket, kuota, masa aktif, dan akun Super Admin perusahaan)
+**Alur berlangganan:** Super Global Admin → _Perusahaan Baru_ (isi nama perusahaan, paket, kuota, masa aktif, dan akun Super Admin perusahaan)
 → kirim email/password itu ke pelanggan → Super Admin perusahaan membuat kantor, Admin Kantor, dan karyawan sendiri.
 Aksi lain: edit, perpanjang +30 hari, tangguhkan/aktifkan, reset password Super Admin, **hapus permanen** (wajib mengetik kode perusahaan).
 Perusahaan yang ditangguhkan / kedaluwarsa otomatis tidak bisa login (web & Android) dan token lamanya ditolak.
@@ -75,28 +75,28 @@ Pendaftaran mandiri `/daftar` **dinonaktifkan** (`$config['allow_self_register']
   `application/language/en_ui.php` (`whole` = label utuh, `phrase` = kalimat). Data yang diinput pengguna (nama, alamat, nama kantor, dll.) **tidak** diterjemahkan.
 - **Menambah teks baru**: tulis teks Indonesia di view/controller seperti biasa, lalu tambahkan pasangannya di `application/language/en_ui.php`
   (hindari tanda kutip lurus `'` `"` dan `&` pada sisi English; pakai `’ “ ”` dan kata "and"). Untuk kalimat yang disusun dari variabel PHP, bungkus bagian tetapnya dengan `t('teks')`.
-- Belum diterjemahkan: **PWA** (`/app`) dan **landing page** — keduanya tetap berbahasa Indonesia.
+- Belum diterjemahkan: **PWA** (`/app`) dan **landing page** - keduanya tetap berbahasa Indonesia.
 
 ## 2. Database & data demo
 
 Hanya dua file di `database/`:
 
-1. **`schema.sql`** — semua tabel + 1 akun Super Global Admin. Import ke database kosong.
-2. **`data_demo.sql`** *(opsional)* — dua perusahaan contoh (aman diimpor ulang; hanya kode `DEMO` & `DEMO2` yang dibuat ulang):
+1. **`schema.sql`** - semua tabel + 1 akun Super Global Admin. Import ke database kosong.
+2. **`data_demo.sql`** _(opsional)_ - dua perusahaan contoh (aman diimpor ulang; hanya kode `DEMO` & `DEMO2` yang dibuat ulang):
    - **PT Demo Maju Jaya** (`DEMO`): 3 kantor (Surabaya, Sidoarjo, Makassar/WITA), shift & jadwal, 14 karyawan + 1 driver, absensi 2 minggu,
      tracking hari ini, pengajuan, hari libur, 2 pengiriman.
-   - **CV Contoh Sejahtera** (`DEMO2`): 1 kantor, 2 karyawan — untuk membuktikan data antar perusahaan tidak saling terlihat.
+   - **CV Contoh Sejahtera** (`DEMO2`): 1 kantor, 2 karyawan - untuk membuktikan data antar perusahaan tidak saling terlihat.
 
 Password semua akun demo: **`demo123`**
 
-| Email | Peran |
-|-------|-------|
-| `admin@example.com` | Super Admin PT Demo |
-| `citra@example.com` | Admin Kantor PT Demo (Sidoarjo + Surabaya) |
-| `bos@contoh.id` | Super Admin CV Contoh |
-| `ahmad@example.com`, `budi@example.com`, `deni@example.com` ... | Karyawan PT Demo |
-| `sopir@example.com` | Driver PT Demo |
-| `rina@contoh.id`, `tono@contoh.id` | Karyawan CV Contoh |
+| Email                                                           | Peran                                      |
+| --------------------------------------------------------------- | ------------------------------------------ |
+| `admin@example.com`                                             | Super Admin PT Demo                        |
+| `citra@example.com`                                             | Admin Kantor PT Demo (Sidoarjo + Surabaya) |
+| `bos@contoh.id`                                                 | Super Admin CV Contoh                      |
+| `ahmad@example.com`, `budi@example.com`, `deni@example.com` ... | Karyawan PT Demo                           |
+| `sopir@example.com`                                             | Driver PT Demo                             |
+| `rina@contoh.id`, `tono@contoh.id`                              | Karyawan CV Contoh                         |
 
 Mode demo PWA (tanpa server) memakai akun terpisah: `ahmad@example.com` / `sopir@example.com`, password `demo`.
 
@@ -143,23 +143,24 @@ curl -X POST http://192.168.1.100/employee-tracker-backend/api/attendance/check-
 
 ## 4. Daftar endpoint (harus sama persis dengan `ApiService.kt` di Android)
 
-| Method | Path                        | Auth | Keterangan |
-|--------|-----------------------------|:---:|------------|
-| POST   | `/api/auth/login`           | -   | `{email, password}` -> `{token, employee}` |
-| GET    | `/api/offices`               | ✔  | Daftar kantor aktif |
-| GET    | `/api/employees/me`          | ✔  | Profil karyawan yang login |
-| POST   | `/api/attendance/check-in`   | ✔  | Validasi lokasi di server, simpan absensi |
-| POST   | `/api/attendance/check-out`  | ✔  | Idem, pakai `check_out_radius` |
-| GET    | `/api/attendance/today`      | ✔  | Status absen hari ini |
-| GET    | `/api/attendance/history`    | ✔  | Riwayat absensi |
-| POST   | `/api/tracking/sync`         | ✔  | Kirim batch titik lokasi (setiap 10 menit) |
-| GET    | `/api/tracking?date=YYYY-MM-DD` | ✔ | Titik tracking milik sendiri pada satu tanggal |
-| GET    | `/api/shifts/my`             | ✔  | Shift hari ini + 7 hari ke depan |
-| POST   | `/api/auth/change-password`  | ✔  | Ubah password sendiri |
-| POST   | `/api/requests`              | ✔  | Kirim pengajuan (LATE/CHECK_IN/CHECK_OUT/LEAVE) |
-| GET    | `/api/requests`               | ✔  | Riwayat pengajuan milik sendiri |
+| Method | Path                            | Auth | Keterangan                                      |
+| ------ | ------------------------------- | :--: | ----------------------------------------------- |
+| POST   | `/api/auth/login`               |  -   | `{email, password}` -> `{token, employee}`      |
+| GET    | `/api/offices`                  |  ✔   | Daftar kantor aktif                             |
+| GET    | `/api/employees/me`             |  ✔   | Profil karyawan yang login                      |
+| POST   | `/api/attendance/check-in`      |  ✔   | Validasi lokasi di server, simpan absensi       |
+| POST   | `/api/attendance/check-out`     |  ✔   | Idem, pakai `check_out_radius`                  |
+| GET    | `/api/attendance/today`         |  ✔   | Status absen hari ini                           |
+| GET    | `/api/attendance/history`       |  ✔   | Riwayat absensi                                 |
+| POST   | `/api/tracking/sync`            |  ✔   | Kirim batch titik lokasi (setiap 10 menit)      |
+| GET    | `/api/tracking?date=YYYY-MM-DD` |  ✔   | Titik tracking milik sendiri pada satu tanggal  |
+| GET    | `/api/shifts/my`                |  ✔   | Shift hari ini + 7 hari ke depan                |
+| POST   | `/api/auth/change-password`     |  ✔   | Ubah password sendiri                           |
+| POST   | `/api/requests`                 |  ✔   | Kirim pengajuan (LATE/CHECK_IN/CHECK_OUT/LEAVE) |
+| GET    | `/api/requests`                 |  ✔   | Riwayat pengajuan milik sendiri                 |
 
 Semua endpoint ber-`✔` memerlukan header:
+
 ```
 Authorization: Bearer <token dari login>
 ```
@@ -173,7 +174,7 @@ Authorization: Bearer <token dari login>
   tracking memverifikasi `attendance.employee_id` cocok dengan token
   yang sedang login sebelum menulis/membaca apa pun.
 - **Jarak & radius selalu dihitung ulang di server** (`distance_helper.php`,
-  fungsi Haversine) — hasil perhitungan di Android hanya untuk
+  fungsi Haversine) - hasil perhitungan di Android hanya untuk
   tampilan UI, keputusan sebenarnya selalu dari sini.
 - Password disimpan sebagai hash bcrypt (`password_hash`/`password_verify`),
   bukan plaintext.
@@ -183,6 +184,7 @@ Authorization: Bearer <token dari login>
 ## 6. Menyambungkan Android app ke backend ini
 
 Di project Android:
+
 1. Buka `app/src/main/java/com/employeetracker/app/util/Constants.kt`,
    ubah `USE_MOCK_API` menjadi `false`.
 2. Buka `app/build.gradle.kts`, ubah `BASE_URL` ke alamat backend Anda,
@@ -196,7 +198,7 @@ Di project Android:
 ## 7. Yang belum termasuk (menyusul)
 
 - Web admin (Master Kantor, Master Karyawan, approve/reject pengajuan,
-  dashboard tracking) — akan dibuat setelah alur karyawan ini stabil.
+  dashboard tracking) - akan dibuat setelah alur karyawan ini stabil.
 - Refresh-token / logout endpoint (saat ini token cukup lama masa
   berlakunya untuk kebutuhan mobile).
 - Rate limiting pada endpoint login.

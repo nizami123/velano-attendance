@@ -5,7 +5,7 @@
 
 <div class="alert alert-warning small py-2">
     <i class="bi bi-info-circle-fill me-1"></i>
-    Status <strong>Dibatalkan</strong> selalu 0 — sistem belum memiliki status pembatalan pengiriman di database
+    Status <strong>Dibatalkan</strong> selalu 0 - sistem belum memiliki status pembatalan pengiriman di database
     (nilai asli yang ada hanya <code>IN_PROGRESS</code>, <code>ARRIVED</code>, <code>COMPLETED</code>).
 </div>
 

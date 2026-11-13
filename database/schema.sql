@@ -1,5 +1,5 @@
 -- =====================================================================
--- VELANO — SKEMA DATABASE LENGKAP (instalasi baru)
+-- VELANO - SKEMA DATABASE LENGKAP (instalasi baru)
 -- MySQL 5.7+ / MariaDB 10.3+
 --
 -- Cara pakai (database kosong):
@@ -638,7 +638,7 @@ CREATE TABLE IF NOT EXISTS `demo_requests` (
 
 -- --------------------------------------------------------
 -- Akun awal Super Global Admin (SATU baris saja).
--- Password: SuperGlobal@123  (bcrypt) — ganti setelah login pertama.
+-- Password: SuperGlobal@123  (bcrypt) - ganti setelah login pertama.
 -- --------------------------------------------------------
 INSERT INTO `global_admins` (`name`, `email`, `password`, `status`, `created_at`) VALUES
 ('Super Global Admin', 'superglobal@velano.id', '$2y$10$2lz4cVBUfS3OL4QEzaAuHecWFEeH9oQ5pyooUQPlSDy1RRXGrMtX2', 'ACTIVE', NOW());

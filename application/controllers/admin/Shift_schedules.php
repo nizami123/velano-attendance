@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Admin_Controller.php';
 
 /**
- * Jadwal Shift — admin menentukan karyawan X pada tanggal Y masuk shift
+ * Jadwal Shift - admin menentukan karyawan X pada tanggal Y masuk shift
  * apa (atau libur). Rotasi dilakukan dengan mengisi shift berbeda di
  * tanggal berbeda, baik per sel maupun massal memakai pola rotasi.
  *
@@ -41,7 +41,7 @@ class Shift_schedules extends MY_Admin_Controller
         ));
     }
 
-    /** GET AJAX — data grid satu kantor untuk satu bulan. */
+    /** GET AJAX - data grid satu kantor untuk satu bulan. */
     public function grid_data()
     {
         $officeId = $this->resolveOfficeId($this->input->get('office_id'));
@@ -72,7 +72,7 @@ class Shift_schedules extends MY_Admin_Controller
     }
 
     /**
-     * POST AJAX — ubah satu sel.
+     * POST AJAX - ubah satu sel.
      * value: '' = hapus (kembali ke default), 'OFF' = libur, angka = id shift.
      */
     public function save_cell()
@@ -110,7 +110,7 @@ class Shift_schedules extends MY_Admin_Controller
     }
 
     /**
-     * POST AJAX — pengaturan massal / pola rotasi.
+     * POST AJAX - pengaturan massal / pola rotasi.
      *
      * Pola = urutan langkah [shift (atau libur) x jumlah hari] yang
      * diulang terus sepanjang rentang tanggal. `stagger` menggeser awal

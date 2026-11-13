@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Manajemen Shift — dipakai oleh:
+ * Manajemen Shift - dipakai oleh:
  *  - api/Shifts.php (Android: jadwal shift milik karyawan yang login)
  *  - admin/Shifts.php (Master Shift per kantor)
  *  - admin/Shift_schedules.php (penjadwalan shift per karyawan per tanggal)

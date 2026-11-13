@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Controller.php';
 
 /**
- * Fitur Pengiriman Kendaraan — khusus role DRIVER.
+ * Fitur Pengiriman Kendaraan - khusus role DRIVER.
  *
  * Sama seperti fitur absensi, role TIDAK boleh dipercaya dari client:
  * setiap endpoint di sini memanggil require_driver() yang membaca role
@@ -66,12 +66,12 @@ class Deliveries extends MY_Controller
 
         // Tujuan pengiriman: pilih salah satu kantor terdaftar
         // (destination_office_id), ATAU tentukan tujuan bebas sebagai
-        // pemberhentian terakhir — dua-duanya disimpan ke kolom
+        // pemberhentian terakhir - dua-duanya disimpan ke kolom
         // destination_* yang sama (disalin dari data kantor kalau dari
         // daftar), supaya validasi kedatangan & respons API tidak perlu
         // tahu bedanya lagi setelah ini.
         //
-        // Untuk tujuan bebas, driver CUKUP menulis alamat lengkapnya —
+        // Untuk tujuan bebas, driver CUKUP menulis alamat lengkapnya -
         // lat/lng TIDAK wajib diisi dari HP driver lagi (tidak ada lagi
         // geocoding di sisi Android). Titik koordinatnya (destination_
         // latitude/longitude) baru diisi belakangan oleh admin lewat
@@ -139,7 +139,7 @@ class Deliveries extends MY_Controller
      *         arrival_photo_base64, notes, timestamp }
      *
      * Server re-validates the arrival radius itself (never trusts a
-     * client-reported "I've arrived" flag) — same principle as
+     * client-reported "I've arrived" flag) - same principle as
      * attendance check-in/out.
      */
     public function complete()
@@ -173,12 +173,12 @@ class Deliveries extends MY_Controller
         }
 
         // Jarak & radius kedatangan divalidasi terhadap destination_latitude/
-        // longitude/radius yang tersimpan sejak "Mulai Pengiriman" — berlaku
+        // longitude/radius yang tersimpan sejak "Mulai Pengiriman" - berlaku
         // sama persis baik tujuannya kantor terdaftar maupun tujuan bebas
         // yang driver tentukan sendiri, tidak perlu tahu bedanya lagi di sini.
         // Untuk tujuan bebas, destination_latitude/longitude bisa saja
         // masih NULL di sini (driver hanya mengisi alamat, admin belum
-        // sempat mengisi titik koordinatnya di panel admin) — dalam hal
+        // sempat mengisi titik koordinatnya di panel admin) - dalam hal
         // itu validasi jarak dilewati ($distance tetap null di bawah) dan
         // pengiriman boleh diselesaikan tanpa pengecekan radius, sampai
         // admin melengkapi koordinatnya.
@@ -219,7 +219,7 @@ class Deliveries extends MY_Controller
         ), 200);
     }
 
-    /** GET /api/deliveries/active — current IN_PROGRESS/ARRIVED delivery for this driver, or null. */
+    /** GET /api/deliveries/active - current IN_PROGRESS/ARRIVED delivery for this driver, or null. */
     public function active()
     {
         $driver = $this->require_driver();

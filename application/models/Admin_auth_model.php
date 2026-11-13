@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Web admin login. Deliberately separate from Auth_model (which issues
- * bearer tokens for the Android app) — the web admin uses CodeIgniter's
+ * bearer tokens for the Android app) - the web admin uses CodeIgniter's
  * native PHP session instead, since it's a browser, not a mobile API
  * client. Both still authenticate against the SAME `employees` table
  * and the SAME bcrypt password hashes; no new table is created.
@@ -48,7 +48,7 @@ class Admin_auth_model extends CI_Model
         return array_map('intval', array_column($rows, 'office_id'));
     }
 
-    /** Semua kantor (aktif maupun tidak) milik admin — untuk form edit Super Admin. */
+    /** Semua kantor (aktif maupun tidak) milik admin - untuk form edit Super Admin. */
     public function getAllOfficeIdsForAdmin(int $adminId): array
     {
         if (!$this->tableReady()) return array();

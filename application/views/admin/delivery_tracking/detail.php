@@ -2,7 +2,7 @@
     <a href="<?= site_url('admin/deliveries') ?>" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
     <div>
         <h4 class="fw-bold mb-0">Tracking Pengiriman Kendaraan</h4>
-        <p class="text-gray small mb-0"><?= html_escape($delivery['brand']) ?> <?= html_escape($delivery['vehicle_type']) ?> — <?= html_escape($delivery['driver_name']) ?></p>
+        <p class="text-gray small mb-0"><?= html_escape($delivery['brand']) ?> <?= html_escape($delivery['vehicle_type']) ?> - <?= html_escape($delivery['driver_name']) ?></p>
     </div>
     <span id="liveBadge" class="badge-at badge-at-gray ms-auto"></span>
 </div>
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function setBadge(st) {
         const map = {
             IN_PROGRESS: ['<i class="bi bi-circle-fill" style="font-size:8px;"></i> DALAM PERJALANAN', 'badge-at-blue'],
-            ARRIVED: ['SAMPAI TUJUAN — MENUNGGU SELESAI', 'badge-at-orange'],
+            ARRIVED: ['SAMPAI TUJUAN - MENUNGGU SELESAI', 'badge-at-orange'],
             COMPLETED: ['<i class="bi bi-check-circle-fill"></i> SELESAI', 'badge-at-green']
         };
         const m = map[st] || [st, 'badge-at-gray'];

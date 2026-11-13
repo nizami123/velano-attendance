@@ -26,7 +26,7 @@ class Attendances extends MY_Admin_Controller
         ));
     }
 
-    /** POST AJAX — DataTables server-side source. */
+    /** POST AJAX - DataTables server-side source. */
     public function list_data()
     {
         $columnMap = array(

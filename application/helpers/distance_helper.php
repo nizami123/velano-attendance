@@ -7,7 +7,7 @@ if (!function_exists('distance_meters')) {
      * This is the SERVER-SIDE source of truth for attendance location
      * validation (spec section 6/7). The Android app also computes this
      * client-side for instant UI feedback, but that result is never
-     * trusted — this function is what actually decides accept/reject.
+     * trusted - this function is what actually decides accept/reject.
      */
     function distance_meters(float $lat1, float $lng1, float $lat2, float $lng2): float
     {

@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderMarkers(<?= json_encode($employees) ?>, <?= json_encode($drivers) ?>);
 
     // Polling: position-only refresh every 30s, no full-page reload,
-    // no re-fetching route history — just current markers.
+    // no re-fetching route history - just current markers.
     setInterval(function () {
         fetch(ADMIN_BASE_URL + 'admin/monitoring/positions_data')
             .then(r => r.json()).then(res => {

@@ -1,166 +1,274 @@
 // Fitur Pengiriman Kendaraan (role DRIVER): ambil kendaraan -> berjalan -> sampai tujuan.
-import { session, pointsDb } from '../store.js';
-import { Office, Delivery } from '../repo.js';
-import { Time, icon, esc, $, $$, haversine, totalDistanceKm, modal, toast, mapsLink } from '../util.js';
-import { startDeliveryTracking, stopDeliveryTracking, DeliveryTracker, onTrackerChange, syncKind } from '../tracker.js';
-import { photoBox } from './photo.js';
-import { drawMap } from '../map.js';
-import { t } from '../i18n.js';
+import { session, pointsDb } from "../store.js";
+import { Office, Delivery } from "../repo.js";
+import {
+	Time,
+	icon,
+	esc,
+	$,
+	$$,
+	haversine,
+	totalDistanceKm,
+	modal,
+	toast,
+	mapsLink,
+} from "../util.js";
+import {
+	startDeliveryTracking,
+	stopDeliveryTracking,
+	DeliveryTracker,
+	onTrackerChange,
+	syncKind,
+} from "../tracker.js";
+import { photoBox } from "./photo.js";
+import { drawMap } from "../map.js";
+import { t } from "../i18n.js";
 
 // ---------------------------------------------------------------------------
 // Layar 1: form data kendaraan + foto + tujuan
 // ---------------------------------------------------------------------------
 export async function pickup(view, ctx) {
-  const active = await Delivery.active();
-  if (!ctx.isCurrent()) return;
-  if (active) { ctx.go('delivery', { replace: true }); return; }
+	const active = await Delivery.active();
+	if (!ctx.isCurrent()) return;
+	if (active) {
+		ctx.go("delivery", { replace: true });
+		return;
+	}
 
-  view.innerHTML = `
-  <div class="topbar"><button class="icon-btn" id="back" aria-label="${t('Kembali')}">${icon('back', 24)}</button><h1>${t('Pengiriman Kendaraan')}</h1></div>
+	view.innerHTML = `
+  <div class="topbar"><button class="icon-btn" id="back" aria-label="${t("Kembali")}">${icon("back", 24)}</button><h1>${t("Pengiriman Kendaraan")}</h1></div>
   <div class="pad">
-    <p class="muted">${t('Isi data kendaraan dan ambil foto sebelum memulai pengiriman.')}</p>
+    <p class="muted">${t("Isi data kendaraan dan ambil foto sebelum memulai pengiriman.")}</p>
 
-    <h3 class="section-title" style="margin:16px 0 10px">${t('Data Kendaraan')}</h3>
-    <div class="field"><label for="engine">${t('Nomor Mesin')} *</label><input class="input" id="engine" autocapitalize="characters" autocorrect="off" spellcheck="false"></div>
-    <div class="field"><label for="chassis">${t('Nomor Rangka')} *</label><input class="input" id="chassis" autocapitalize="characters" autocorrect="off" spellcheck="false"></div>
-    <div class="field"><label for="brand">${t('Merk Kendaraan')} *</label><input class="input" id="brand" autocapitalize="words"></div>
-    <div class="field"><label for="vtype">${t('Tipe Kendaraan')} *</label><input class="input" id="vtype" autocapitalize="words"></div>
-    <div class="field"><label for="color">${t('Warna')} *</label><input class="input" id="color" autocapitalize="words"></div>
+    <h3 class="section-title" style="margin:16px 0 10px">${t("Data Kendaraan")}</h3>
+    <div class="field"><label for="engine">${t("Nomor Mesin")} *</label><input class="input" id="engine" autocapitalize="characters" autocorrect="off" spellcheck="false"></div>
+    <div class="field"><label for="chassis">${t("Nomor Rangka")} *</label><input class="input" id="chassis" autocapitalize="characters" autocorrect="off" spellcheck="false"></div>
+    <div class="field"><label for="brand">${t("Merk Kendaraan")} *</label><input class="input" id="brand" autocapitalize="words"></div>
+    <div class="field"><label for="vtype">${t("Tipe Kendaraan")} *</label><input class="input" id="vtype" autocapitalize="words"></div>
+    <div class="field"><label for="color">${t("Warna")} *</label><input class="input" id="color" autocapitalize="words"></div>
 
-    <h3 class="section-title" style="margin:16px 0 10px">${t('Tujuan Pengiriman')}</h3>
+    <h3 class="section-title" style="margin:16px 0 10px">${t("Tujuan Pengiriman")}</h3>
     <button class="card flat" id="dest" style="display:block;width:100%;margin:0;text-align:left">
-      <div class="row gap"><span class="grow"><b id="destName">${t('Pilih tujuan pengiriman')}</b><div class="small muted" id="destAddr">-</div></span>${icon('chevron', 20)}</div>
+      <div class="row gap"><span class="grow"><b id="destName">${t("Pilih tujuan pengiriman")}</b><div class="small muted" id="destAddr">-</div></span>${icon("chevron", 20)}</div>
     </button>
 
-    <h3 class="section-title" style="margin:16px 0 10px">${t('Keterangan (opsional)')}</h3>
-    <textarea class="input" id="notes" maxlength="150" rows="2" placeholder="${t('Catatan tambahan')}"></textarea>
+    <h3 class="section-title" style="margin:16px 0 10px">${t("Keterangan (opsional)")}</h3>
+    <textarea class="input" id="notes" maxlength="150" rows="2" placeholder="${t("Catatan tambahan")}"></textarea>
     <div class="counter" id="cnt">0/150</div>
 
-    <h3 class="section-title" style="margin:16px 0 10px">${t('Foto Kendaraan Saat Diambil')}</h3>
+    <h3 class="section-title" style="margin:16px 0 10px">${t("Foto Kendaraan Saat Diambil")}</h3>
     <div id="photo"></div>
-    <p class="small muted mt8">${t('Pastikan foto jelas dari tampak depan atau samping kendaraan.')}</p>
+    <p class="small muted mt8">${t("Pastikan foto jelas dari tampak depan atau samping kendaraan.")}</p>
 
-    <div class="small muted mt12" id="gps">${t('Mencari lokasi GPS…')}</div>
+    <div class="small muted mt12" id="gps">${t("Mencari lokasi GPS…")}</div>
     <div id="err" class="error hidden" role="alert"></div>
-    <button class="btn primary block mt12" id="submit">${t('MULAI PENGIRIMAN')}</button>
+    <button class="btn primary block mt12" id="submit">${t("MULAI PENGIRIMAN")}</button>
   </div>`;
 
-  $('#back', view).addEventListener('click', () => ctx.go('home'));
-  const err = $('#err', view);
-  const showErr = (m) => { err.textContent = m || ''; err.classList.toggle('hidden', !m); };
+	$("#back", view).addEventListener("click", () => ctx.go("home"));
+	const err = $("#err", view);
+	const showErr = (m) => {
+		err.textContent = m || "";
+		err.classList.toggle("hidden", !m);
+	};
 
-  let destination = null, loc = null, offices = [];
-  const pb = photoBox($('#photo', view), { facing: 'environment', hint: t('Arahkan kamera ke kendaraan') });
+	let destination = null,
+		loc = null,
+		offices = [];
+	const pb = photoBox($("#photo", view), {
+		facing: "environment",
+		hint: t("Arahkan kamera ke kendaraan"),
+	});
 
-  const setDest = (d) => {
-    destination = d;
-    $('#destName', view).textContent = d ? d.name : t('Pilih tujuan pengiriman');
-    $('#destAddr', view).textContent = d ? (d.address || '-') : '-';
-  };
-  Office.refresh().catch(() => []).then(() => { offices = session.offices.filter((o) => o.status !== 'INACTIVE'); });
-  offices = session.offices.filter((o) => o.status !== 'INACTIVE');
+	const setDest = (d) => {
+		destination = d;
+		$("#destName", view).textContent = d
+			? d.name
+			: t("Pilih tujuan pengiriman");
+		$("#destAddr", view).textContent = d ? d.address || "-" : "-";
+	};
+	Office.refresh()
+		.catch(() => [])
+		.then(() => {
+			offices = session.offices.filter((o) => o.status !== "INACTIVE");
+		});
+	offices = session.offices.filter((o) => o.status !== "INACTIVE");
 
-  $('#notes', view).addEventListener('input', (e) => { $('#cnt', view).textContent = `${e.target.value.length}/150`; });
+	$("#notes", view).addEventListener("input", (e) => {
+		$("#cnt", view).textContent = `${e.target.value.length}/150`;
+	});
 
-  $('#dest', view).addEventListener('click', async () => {
-    const choice = await modal((box, close) => {
-      box.innerHTML = `<h3>${t('Pilih Tujuan Pengiriman')}</h3>
-        ${offices.map((o) => `<button class="opt ${destination && destination.officeId === o.id ? 'sel' : ''}" data-o="${o.id}">${icon('building', 20)}<span><b>${esc(o.name)}</b><br><span class="small muted">${esc(o.address || '')}</span></span></button>`).join('')}
-        <button class="opt" data-o="other">${icon('pin', 20)}<span><b>${t('Tujuan lain…')}</b><br><span class="small muted">${t('Alamat tujuan yang bukan kantor terdaftar')}</span></span></button>`;
-      $$('.opt', box).forEach((b) => b.addEventListener('click', () => close(b.dataset.o)));
-    }, { sheet: true });
-    if (!choice) return;
-    if (choice === 'other') {
-      const custom = await modal((box, close) => {
-        box.innerHTML = `<h3>${t('Tujuan Lain')}</h3>
-          <div class="field"><label>${t('Nama tujuan')}</label><input class="input" id="cn" placeholder="${t('mis. Dealer Sidoarjo')}"></div>
-          <div class="field"><label>${t('Alamat lengkap')} *</label><textarea class="input" id="ca" rows="2"></textarea></div>
-          <div class="field"><label>${t('Radius kedatangan (meter)')}</label><input class="input" id="cr" type="number" inputmode="numeric" value="100"></div>
+	$("#dest", view).addEventListener("click", async () => {
+		const choice = await modal(
+			(box, close) => {
+				box.innerHTML = `<h3>${t("Pilih Tujuan Pengiriman")}</h3>
+        ${offices.map((o) => `<button class="opt ${destination && destination.officeId === o.id ? "sel" : ""}" data-o="${o.id}">${icon("building", 20)}<span><b>${esc(o.name)}</b><br><span class="small muted">${esc(o.address || "")}</span></span></button>`).join("")}
+        <button class="opt" data-o="other">${icon("pin", 20)}<span><b>${t("Tujuan lain…")}</b><br><span class="small muted">${t("Alamat tujuan yang bukan kantor terdaftar")}</span></span></button>`;
+				$$(".opt", box).forEach((b) =>
+					b.addEventListener("click", () => close(b.dataset.o)),
+				);
+			},
+			{ sheet: true },
+		);
+		if (!choice) return;
+		if (choice === "other") {
+			const custom = await modal((box, close) => {
+				box.innerHTML = `<h3>${t("Tujuan Lain")}</h3>
+          <div class="field"><label>${t("Nama tujuan")}</label><input class="input" id="cn" placeholder="${t("mis. Dealer Sidoarjo")}"></div>
+          <div class="field"><label>${t("Alamat lengkap")} *</label><textarea class="input" id="ca" rows="2"></textarea></div>
+          <div class="field"><label>${t("Radius kedatangan (meter)")}</label><input class="input" id="cr" type="number" inputmode="numeric" value="100"></div>
           <div id="ce" class="error hidden"></div>
-          <div class="row gap end"><button class="btn ghost sm" id="cx">${t('Batal')}</button><button class="btn primary sm" id="cok">${t('Gunakan Tujuan Ini')}</button></div>`;
-        $('#cx', box).addEventListener('click', () => close(null));
-        $('#cok', box).addEventListener('click', () => {
-          const address = $('#ca', box).value.trim();
-          if (!address) { $('#ce', box).textContent = t('Alamat lengkap tujuan wajib diisi'); $('#ce', box).classList.remove('hidden'); return; }
-          const name = $('#cn', box).value.trim() || 'Tujuan Lain';
-          close({ name, address, radius: parseInt($('#cr', box).value, 10) || 100 });
-        });
-      });
-      if (custom) setDest({ custom: true, name: custom.name, address: custom.address, radius: custom.radius });
-    } else {
-      const o = offices.find((x) => String(x.id) === choice);
-      if (o) setDest({ officeId: o.id, name: o.name, address: o.address });
-    }
-  });
+          <div class="row gap end"><button class="btn ghost sm" id="cx">${t("Batal")}</button><button class="btn primary sm" id="cok">${t("Gunakan Tujuan Ini")}</button></div>`;
+				$("#cx", box).addEventListener("click", () => close(null));
+				$("#cok", box).addEventListener("click", () => {
+					const address = $("#ca", box).value.trim();
+					if (!address) {
+						$("#ce", box).textContent = t("Alamat lengkap tujuan wajib diisi");
+						$("#ce", box).classList.remove("hidden");
+						return;
+					}
+					const name = $("#cn", box).value.trim() || "Tujuan Lain";
+					close({
+						name,
+						address,
+						radius: parseInt($("#cr", box).value, 10) || 100,
+					});
+				});
+			});
+			if (custom)
+				setDest({
+					custom: true,
+					name: custom.name,
+					address: custom.address,
+					radius: custom.radius,
+				});
+		} else {
+			const o = offices.find((x) => String(x.id) === choice);
+			if (o) setDest({ officeId: o.id, name: o.name, address: o.address });
+		}
+	});
 
-  // GPS
-  let watch = null;
-  if ('geolocation' in navigator) {
-    watch = navigator.geolocation.watchPosition((p) => {
-      loc = p.coords; $('#gps', view).textContent = t('Lokasi GPS siap (akurasi {n} m)', { n: Math.round(p.coords.accuracy) });
-    }, (e) => {
-      $('#gps', view).textContent = e.code === 1 ? t('Izin lokasi ditolak — aktifkan di Pengaturan iPhone › Privasi › Layanan Lokasi') : t('Lokasi GPS belum didapat…');
-    }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 3000 });
-  }
+	// GPS
+	let watch = null;
+	if ("geolocation" in navigator) {
+		watch = navigator.geolocation.watchPosition(
+			(p) => {
+				loc = p.coords;
+				$("#gps", view).textContent = t("Lokasi GPS siap (akurasi {n} m)", {
+					n: Math.round(p.coords.accuracy),
+				});
+			},
+			(e) => {
+				$("#gps", view).textContent =
+					e.code === 1
+						? t(
+								"Izin lokasi ditolak - aktifkan di Pengaturan iPhone › Privasi › Layanan Lokasi",
+							)
+						: t("Lokasi GPS belum didapat…");
+			},
+			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 3000 },
+		);
+	}
 
-  $('#submit', view).addEventListener('click', async () => {
-    showErr('');
-    const v = (id) => $('#' + id, view).value.trim();
-    if (!v('engine') || !v('chassis') || !v('brand') || !v('vtype') || !v('color')) return showErr(t('Nomor mesin, nomor rangka, merk, tipe, dan warna wajib diisi'));
-    if (!destination) return showErr(t('Pilih tujuan pengiriman terlebih dahulu'));
-    if (!loc) return showErr(t('Lokasi GPS belum didapat, coba lagi'));
-    if (!pb.photo) return showErr(t('Ambil foto kendaraan terlebih dahulu'));
+	$("#submit", view).addEventListener("click", async () => {
+		showErr("");
+		const v = (id) => $("#" + id, view).value.trim();
+		if (
+			!v("engine") ||
+			!v("chassis") ||
+			!v("brand") ||
+			!v("vtype") ||
+			!v("color")
+		)
+			return showErr(
+				t("Nomor mesin, nomor rangka, merk, tipe, dan warna wajib diisi"),
+			);
+		if (!destination)
+			return showErr(t("Pilih tujuan pengiriman terlebih dahulu"));
+		if (!loc) return showErr(t("Lokasi GPS belum didapat, coba lagi"));
+		if (!pb.photo) return showErr(t("Ambil foto kendaraan terlebih dahulu"));
 
-    const base = {
-      engine_number: v('engine'), chassis_number: v('chassis'), brand: v('brand'), vehicle_type: v('vtype'), color: v('color'),
-      notes: v('notes') || null, pickup_photo_base64: pb.photo.base64,
-      pickup_latitude: loc.latitude, pickup_longitude: loc.longitude, timestamp: Time.now(),
-    };
-    const req = destination.custom
-      ? { ...base, destination_name: destination.name, destination_address: destination.address, destination_latitude: null, destination_longitude: null, destination_radius: destination.radius }
-      : { ...base, destination_office_id: destination.officeId };
+		const base = {
+			engine_number: v("engine"),
+			chassis_number: v("chassis"),
+			brand: v("brand"),
+			vehicle_type: v("vtype"),
+			color: v("color"),
+			notes: v("notes") || null,
+			pickup_photo_base64: pb.photo.base64,
+			pickup_latitude: loc.latitude,
+			pickup_longitude: loc.longitude,
+			timestamp: Time.now(),
+		};
+		const req = destination.custom
+			? {
+					...base,
+					destination_name: destination.name,
+					destination_address: destination.address,
+					destination_latitude: null,
+					destination_longitude: null,
+					destination_radius: destination.radius,
+				}
+			: { ...base, destination_office_id: destination.officeId };
 
-    const btn = $('#submit', view); btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${t('Memproses...')}`;
-    const res = await Delivery.start(req);
-    if (res.type === 'ok') {
-      startDeliveryTracking(res.delivery);
-      toast(t('Pengiriman dimulai'));
-      ctx.go('delivery');
-      return;
-    }
-    btn.disabled = false; btn.textContent = t('MULAI PENGIRIMAN');
-    showErr(res.message);
-  });
+		const btn = $("#submit", view);
+		btn.disabled = true;
+		btn.innerHTML = `<span class="spinner"></span> ${t("Memproses...")}`;
+		const res = await Delivery.start(req);
+		if (res.type === "ok") {
+			startDeliveryTracking(res.delivery);
+			toast(t("Pengiriman dimulai"));
+			ctx.go("delivery");
+			return;
+		}
+		btn.disabled = false;
+		btn.textContent = t("MULAI PENGIRIMAN");
+		showErr(res.message);
+	});
 
-  return () => { if (watch != null) navigator.geolocation.clearWatch(watch); pb.stop(); };
+	return () => {
+		if (watch != null) navigator.geolocation.clearWatch(watch);
+		pb.stop();
+	};
 }
 
 // ---------------------------------------------------------------------------
 // Layar 2: pengiriman berjalan / sampai tujuan
 // ---------------------------------------------------------------------------
 export async function deliveryScreen(view, ctx) {
-  view.innerHTML = '<div class="loading"><span class="spinner"></span></div>';
-  const d = await Delivery.active();
-  if (!ctx.isCurrent()) return;
-  if (!d) { ctx.go('pickup', { replace: true }); return; }
+	view.innerHTML = '<div class="loading"><span class="spinner"></span></div>';
+	const d = await Delivery.active();
+	if (!ctx.isCurrent()) return;
+	if (!d) {
+		ctx.go("pickup", { replace: true });
+		return;
+	}
 
-  startDeliveryTracking(d); // lanjutkan tracking bila aplikasi dibuka ulang
-  Delivery.remotePoints(d.id);
+	startDeliveryTracking(d); // lanjutkan tracking bila aplikasi dibuka ulang
+	Delivery.remotePoints(d.id);
 
-  const hasCoords = d.destination_latitude != null && d.destination_longitude != null;
-  const radius = d.destination_radius || 100;
-  let arrived = false, loc = null, points = [], pb = null, mapCtl = null, watch = null, ticker = null, completing = false;
+	const hasCoords =
+		d.destination_latitude != null && d.destination_longitude != null;
+	const radius = d.destination_radius || 100;
+	let arrived = false,
+		loc = null,
+		points = [],
+		pb = null,
+		mapCtl = null,
+		watch = null,
+		ticker = null,
+		completing = false;
 
-  view.innerHTML = `
-  <div class="topbar"><button class="icon-btn" id="back" aria-label="${t('Kembali')}">${icon('back', 24)}</button><h1 id="ttl">${t('Pengiriman Berjalan')}</h1></div>
+	view.innerHTML = `
+  <div class="topbar"><button class="icon-btn" id="back" aria-label="${t("Kembali")}">${icon("back", 24)}</button><h1 id="ttl">${t("Pengiriman Berjalan")}</h1></div>
   <div class="pad">
     <div class="card blue" style="margin:0 0 14px">
-      <div class="row between"><div style="font-weight:800;font-size:17px" id="hd">${t('Dalam Perjalanan')}</div>
-        <span class="pill" style="background:rgba(255,255,255,.22);color:#fff"><span class="dot-live"></span>${t('Aktif')}</span></div>
-      <div id="sub" style="opacity:.9;font-size:13px;margin:4px 0 12px">${t('Lokasi dicatat otomatis selama pengiriman')}</div>
+      <div class="row between"><div style="font-weight:800;font-size:17px" id="hd">${t("Dalam Perjalanan")}</div>
+        <span class="pill" style="background:rgba(255,255,255,.22);color:#fff"><span class="dot-live"></span>${t("Aktif")}</span></div>
+      <div id="sub" style="opacity:.9;font-size:13px;margin:4px 0 12px">${t("Lokasi dicatat otomatis selama pengiriman")}</div>
       <div class="grid2" style="color:#fff">
-        <div><div class="lbl" style="color:#D6E3FF">${t('Mulai')}</div><div class="val">${d.pickup_time ? Time.withLabel(d.pickup_time) : '-'}</div></div>
-        <div><div class="lbl" style="color:#D6E3FF">${t('Durasi')}</div><div class="val" id="dur">00:00:00</div></div>
+        <div><div class="lbl" style="color:#D6E3FF">${t("Mulai")}</div><div class="val">${d.pickup_time ? Time.withLabel(d.pickup_time) : "-"}</div></div>
+        <div><div class="lbl" style="color:#D6E3FF">${t("Durasi")}</div><div class="val" id="dur">00:00:00</div></div>
       </div>
     </div>
 
@@ -168,135 +276,193 @@ export async function deliveryScreen(view, ctx) {
     <div class="small muted mt8" id="upd">&nbsp;</div>
 
     <div class="card mt12" style="margin:12px 0">
-      <div class="kv"><span>${t('Jarak Tempuh')}</span><b id="mDist">0.0 km</b></div>
-      <div class="kv"><span>${t('Kecepatan Rata-rata')}</span><b id="mSpd">-</b></div>
-      <div class="kv"><span>${t('Lokasi Terakhir')}</span><b id="mLast">-</b></div>
-      <div class="kv"><span>${t('Akurasi GPS')}</span><b id="mAcc">-</b></div>
-      <div class="kv"><span>${t('Menunggu sinkron')}</span><b id="mPend">0</b></div>
+      <div class="kv"><span>${t("Jarak Tempuh")}</span><b id="mDist">0.0 km</b></div>
+      <div class="kv"><span>${t("Kecepatan Rata-rata")}</span><b id="mSpd">-</b></div>
+      <div class="kv"><span>${t("Lokasi Terakhir")}</span><b id="mLast">-</b></div>
+      <div class="kv"><span>${t("Akurasi GPS")}</span><b id="mAcc">-</b></div>
+      <div class="kv"><span>${t("Menunggu sinkron")}</span><b id="mPend">0</b></div>
     </div>
 
     <div class="card" style="margin:0 0 12px">
-      <h3>${t('Tujuan')}</h3>
-      <div style="font-weight:700;margin-top:8px">${esc(d.destination_name || '-')}</div>
-      <div class="small muted">${esc(d.destination_address || '-')}</div>
-      <div class="small muted mt8">${t('Radius kedatangan: {n} m', { n: radius })}${hasCoords ? '' : ' • ' + t('titik koordinat belum diatur admin (validasi radius dilewati)')}</div>
+      <h3>${t("Tujuan")}</h3>
+      <div style="font-weight:700;margin-top:8px">${esc(d.destination_name || "-")}</div>
+      <div class="small muted">${esc(d.destination_address || "-")}</div>
+      <div class="small muted mt8">${t("Radius kedatangan: {n} m", { n: radius })}${hasCoords ? "" : " • " + t("titik koordinat belum diatur admin (validasi radius dilewati)")}</div>
     </div>
     <div class="card" style="margin:0 0 12px">
-      <h3>${t('Kendaraan')}</h3>
-      <div class="kv"><span>${t('Merk / Tipe')}</span><b>${esc(d.brand)} ${esc(d.vehicle_type)}</b></div>
-      <div class="kv"><span>${t('Warna')}</span><b>${esc(d.color)}</b></div>
-      <div class="kv"><span>${t('No. Mesin')}</span><b>${esc(d.engine_number)}</b></div>
-      <div class="kv"><span>${t('No. Rangka')}</span><b>${esc(d.chassis_number)}</b></div>
+      <h3>${t("Kendaraan")}</h3>
+      <div class="kv"><span>${t("Merk / Tipe")}</span><b>${esc(d.brand)} ${esc(d.vehicle_type)}</b></div>
+      <div class="kv"><span>${t("Warna")}</span><b>${esc(d.color)}</b></div>
+      <div class="kv"><span>${t("No. Mesin")}</span><b>${esc(d.engine_number)}</b></div>
+      <div class="kv"><span>${t("No. Rangka")}</span><b>${esc(d.chassis_number)}</b></div>
     </div>
 
-    <div id="enroute"><div id="waitMsg" class="banner">${icon('pin', 18)}<div id="waitTxt">${hasCoords ? t('Tombol penyelesaian muncul saat Anda berada di area tujuan.') : t('Tekan tombol di bawah setelah kendaraan tiba di tujuan.')}</div></div>
-      ${hasCoords ? '' : `<button class="btn primary block" id="manualArrive">${t('SAYA SUDAH SAMPAI')}</button>`}</div>
+    <div id="enroute"><div id="waitMsg" class="banner">${icon("pin", 18)}<div id="waitTxt">${hasCoords ? t("Tombol penyelesaian muncul saat Anda berada di area tujuan.") : t("Tekan tombol di bawah setelah kendaraan tiba di tujuan.")}</div></div>
+      ${hasCoords ? "" : `<button class="btn primary block" id="manualArrive">${t("SAYA SUDAH SAMPAI")}</button>`}</div>
 
     <div id="arrive" class="hidden">
-      <h3 class="section-title" style="margin:8px 0 6px">${t('Foto Kendaraan Saat Tiba')}</h3>
+      <h3 class="section-title" style="margin:8px 0 6px">${t("Foto Kendaraan Saat Tiba")}</h3>
       <div id="aphoto"></div>
-      <div class="field mt12"><label for="anotes">${t('Catatan (opsional)')}</label><textarea class="input" id="anotes" maxlength="150" rows="2"></textarea></div>
+      <div class="field mt12"><label for="anotes">${t("Catatan (opsional)")}</label><textarea class="input" id="anotes" maxlength="150" rows="2"></textarea></div>
       <div id="aerr" class="error hidden" role="alert"></div>
-      <button class="btn primary block" id="complete">${t('SELESAIKAN PENGIRIMAN')}</button>
+      <button class="btn primary block" id="complete">${t("SELESAIKAN PENGIRIMAN")}</button>
     </div>
   </div>`;
 
-  $('#back', view).addEventListener('click', () => ctx.go('home'));
+	$("#back", view).addEventListener("click", () => ctx.go("home"));
 
-  const startMs = Time.parse(d.pickup_time) || Date.now();
+	const startMs = Time.parse(d.pickup_time) || Date.now();
 
-  async function refreshStats() {
-    points = await pointsDb.all('del', d.id);
-    const last = points[points.length - 1];
-    const km = totalDistanceKm(points);
-    $('#mDist', view).textContent = `${km.toFixed(1)} km`;
-    const hours = Math.max((Date.now() - startMs) / 3600e3, 1 / 3600);
-    $('#mSpd', view).textContent = km > 0 ? t('{n} km/jam', { n: Math.round(km / hours) }) : '-';
-    if (last) {
-      $('#mLast', view).textContent = `${last.latitude.toFixed(5)}, ${last.longitude.toFixed(5)}`;
-      $('#mAcc', view).textContent = last.accuracy != null ? t('{n} meter', { n: Math.round(last.accuracy) }) : '-';
-      $('#upd', view).textContent = t('Terakhir diperbarui: {time}', { time: Time.withLabel(last.recorded_at) });
-    }
-    $('#mPend', view).textContent = await pointsDb.countPending('del');
-    drawRoute();
-  }
+	async function refreshStats() {
+		points = await pointsDb.all("del", d.id);
+		const last = points[points.length - 1];
+		const km = totalDistanceKm(points);
+		$("#mDist", view).textContent = `${km.toFixed(1)} km`;
+		const hours = Math.max((Date.now() - startMs) / 3600e3, 1 / 3600);
+		$("#mSpd", view).textContent =
+			km > 0 ? t("{n} km/jam", { n: Math.round(km / hours) }) : "-";
+		if (last) {
+			$("#mLast", view).textContent =
+				`${last.latitude.toFixed(5)}, ${last.longitude.toFixed(5)}`;
+			$("#mAcc", view).textContent =
+				last.accuracy != null
+					? t("{n} meter", { n: Math.round(last.accuracy) })
+					: "-";
+			$("#upd", view).textContent = t("Terakhir diperbarui: {time}", {
+				time: Time.withLabel(last.recorded_at),
+			});
+		}
+		$("#mPend", view).textContent = await pointsDb.countPending("del");
+		drawRoute();
+	}
 
-  function drawRoute() {
-    const el = $('#map', view);
-    if (!el) return;
-    const last = points[points.length - 1];
-    const markers = [];
-    if (hasCoords) markers.push({ lat: d.destination_latitude, lng: d.destination_longitude, color: '#1E9E5A' });
-    const cur = loc ? { lat: loc.latitude, lng: loc.longitude } : last ? { lat: last.latitude, lng: last.longitude } : null;
-    if (cur) markers.push({ ...cur, color: '#048f38' });
-    if (mapCtl) mapCtl.destroy();
-    mapCtl = drawMap(el, {
-      route: points, markers,
-      circle: hasCoords ? { lat: d.destination_latitude, lng: d.destination_longitude, radius } : null,
-      emptyText: t('Menunggu titik lokasi pertama…'),
-    });
-  }
+	function drawRoute() {
+		const el = $("#map", view);
+		if (!el) return;
+		const last = points[points.length - 1];
+		const markers = [];
+		if (hasCoords)
+			markers.push({
+				lat: d.destination_latitude,
+				lng: d.destination_longitude,
+				color: "#1E9E5A",
+			});
+		const cur = loc
+			? { lat: loc.latitude, lng: loc.longitude }
+			: last
+				? { lat: last.latitude, lng: last.longitude }
+				: null;
+		if (cur) markers.push({ ...cur, color: "#048f38" });
+		if (mapCtl) mapCtl.destroy();
+		mapCtl = drawMap(el, {
+			route: points,
+			markers,
+			circle: hasCoords
+				? { lat: d.destination_latitude, lng: d.destination_longitude, radius }
+				: null,
+			emptyText: t("Menunggu titik lokasi pertama…"),
+		});
+	}
 
-  function showArrival(distance) {
-    if (arrived) return;
-    arrived = true;
-    $('#ttl', view).textContent = t('Sampai Tujuan');
-    $('#hd', view).textContent = t('Sampai Tujuan');
-    $('#sub', view).textContent = distance != null
-      ? t('Anda berada di area {name}', { name: d.destination_name || t('tujuan') })
-      : t('Konfirmasi kedatangan Anda dengan mengambil foto kendaraan dan menekan tombol di bawah.');
-    $('#enroute', view).classList.add('hidden');
-    $('#arrive', view).classList.remove('hidden');
-    pb = photoBox($('#aphoto', view), { facing: 'environment', hint: t('Foto kendaraan di lokasi tujuan') });
-  }
+	function showArrival(distance) {
+		if (arrived) return;
+		arrived = true;
+		$("#ttl", view).textContent = t("Sampai Tujuan");
+		$("#hd", view).textContent = t("Sampai Tujuan");
+		$("#sub", view).textContent =
+			distance != null
+				? t("Anda berada di area {name}", {
+						name: d.destination_name || t("tujuan"),
+					})
+				: t(
+						"Konfirmasi kedatangan Anda dengan mengambil foto kendaraan dan menekan tombol di bawah.",
+					);
+		$("#enroute", view).classList.add("hidden");
+		$("#arrive", view).classList.remove("hidden");
+		pb = photoBox($("#aphoto", view), {
+			facing: "environment",
+			hint: t("Foto kendaraan di lokasi tujuan"),
+		});
+	}
 
-  const manual = $('#manualArrive', view);
-  if (manual) manual.addEventListener('click', () => showArrival(null));
+	const manual = $("#manualArrive", view);
+	if (manual) manual.addEventListener("click", () => showArrival(null));
 
-  if ('geolocation' in navigator) {
-    watch = navigator.geolocation.watchPosition((p) => {
-      loc = p.coords;
-      if (hasCoords) {
-        const dist = haversine(loc.latitude, loc.longitude, d.destination_latitude, d.destination_longitude);
-        $('#waitTxt', view).textContent = t('Jarak ke tujuan ±{dist} m (radius {radius} m)', { dist: Math.round(dist), radius });
-        if (dist <= radius) showArrival(dist);
-      }
-    }, () => {}, { enableHighAccuracy: true, timeout: 20000, maximumAge: 5000 });
-  }
+	if ("geolocation" in navigator) {
+		watch = navigator.geolocation.watchPosition(
+			(p) => {
+				loc = p.coords;
+				if (hasCoords) {
+					const dist = haversine(
+						loc.latitude,
+						loc.longitude,
+						d.destination_latitude,
+						d.destination_longitude,
+					);
+					$("#waitTxt", view).textContent = t(
+						"Jarak ke tujuan ±{dist} m (radius {radius} m)",
+						{ dist: Math.round(dist), radius },
+					);
+					if (dist <= radius) showArrival(dist);
+				}
+			},
+			() => {},
+			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 5000 },
+		);
+	}
 
-  $('#complete', view).addEventListener('click', async () => {
-    const aerr = $('#aerr', view);
-    const fail = (m) => { aerr.textContent = m; aerr.classList.remove('hidden'); };
-    aerr.classList.add('hidden');
-    if (!loc || !pb || !pb.photo) return fail(t('Lokasi atau foto belum siap'));
-    if (completing) return;
-    completing = true;
-    const btn = $('#complete', view); btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${t('Menyimpan...')}`;
-    const res = await Delivery.complete({
-      delivery_id: d.id, arrival_latitude: loc.latitude, arrival_longitude: loc.longitude, accuracy: loc.accuracy,
-      arrival_photo_base64: pb.photo.base64, notes: $('#anotes', view).value.trim() || null, timestamp: Time.now(),
-    });
-    completing = false;
-    if (res.type === 'ok') {
-      stopDeliveryTracking();
-      syncKind('del');
-      toast(t('Pengiriman selesai'));
-      ctx.go('home');
-      return;
-    }
-    btn.disabled = false; btn.textContent = t('SELESAIKAN PENGIRIMAN');
-    fail(res.type === 'rejected' ? `${res.message}${res.radius ? ` (${Math.round(res.distance)} m > ${res.radius} m)` : ''}` : res.message);
-  });
+	$("#complete", view).addEventListener("click", async () => {
+		const aerr = $("#aerr", view);
+		const fail = (m) => {
+			aerr.textContent = m;
+			aerr.classList.remove("hidden");
+		};
+		aerr.classList.add("hidden");
+		if (!loc || !pb || !pb.photo) return fail(t("Lokasi atau foto belum siap"));
+		if (completing) return;
+		completing = true;
+		const btn = $("#complete", view);
+		btn.disabled = true;
+		btn.innerHTML = `<span class="spinner"></span> ${t("Menyimpan...")}`;
+		const res = await Delivery.complete({
+			delivery_id: d.id,
+			arrival_latitude: loc.latitude,
+			arrival_longitude: loc.longitude,
+			accuracy: loc.accuracy,
+			arrival_photo_base64: pb.photo.base64,
+			notes: $("#anotes", view).value.trim() || null,
+			timestamp: Time.now(),
+		});
+		completing = false;
+		if (res.type === "ok") {
+			stopDeliveryTracking();
+			syncKind("del");
+			toast(t("Pengiriman selesai"));
+			ctx.go("home");
+			return;
+		}
+		btn.disabled = false;
+		btn.textContent = t("SELESAIKAN PENGIRIMAN");
+		fail(
+			res.type === "rejected"
+				? `${res.message}${res.radius ? ` (${Math.round(res.distance)} m > ${res.radius} m)` : ""}`
+				: res.message,
+		);
+	});
 
-  ticker = setInterval(() => { const el = $('#dur', view); if (el) el.textContent = Time.hms(Date.now() - startMs); }, 1000);
-  $('#dur', view).textContent = Time.hms(Date.now() - startMs);
-  const off = onTrackerChange(refreshStats);
-  await refreshStats();
+	ticker = setInterval(() => {
+		const el = $("#dur", view);
+		if (el) el.textContent = Time.hms(Date.now() - startMs);
+	}, 1000);
+	$("#dur", view).textContent = Time.hms(Date.now() - startMs);
+	const off = onTrackerChange(refreshStats);
+	await refreshStats();
 
-  return () => {
-    clearInterval(ticker); off();
-    if (watch != null) navigator.geolocation.clearWatch(watch);
-    if (mapCtl) mapCtl.destroy();
-    if (pb) pb.stop();
-  };
+	return () => {
+		clearInterval(ticker);
+		off();
+		if (watch != null) navigator.geolocation.clearWatch(watch);
+		if (mapCtl) mapCtl.destroy();
+		if (pb) pb.stop();
+	};
 }

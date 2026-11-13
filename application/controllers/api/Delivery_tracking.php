@@ -15,7 +15,7 @@ class Delivery_tracking extends MY_Controller
         return $employee;
     }
 
-    /** POST /api/delivery-tracking/sync — mirrors Tracking::sync(). */
+    /** POST /api/delivery-tracking/sync - mirrors Tracking::sync(). */
     public function sync()
     {
         $driver = $this->require_driver();
@@ -43,7 +43,7 @@ class Delivery_tracking extends MY_Controller
                 $checkedDelivery[$deliveryId] =
                     $this->Delivery_model->belongsToDriver($deliveryId, (int) $driver['id']);
             }
-            if (!$checkedDelivery[$deliveryId]) continue; // not this driver's delivery — skip silently
+            if (!$checkedDelivery[$deliveryId]) continue; // not this driver's delivery - skip silently
 
             $validRows[] = array(
                 'delivery_id'   => $deliveryId,

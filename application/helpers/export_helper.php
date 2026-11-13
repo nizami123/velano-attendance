@@ -3,20 +3,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * No PDF/Excel library (PhpSpreadsheet, TCPDF, mPDF, ...) is installed
- * in this project (no composer.json / vendor/ present) — per the
+ * in this project (no composer.json / vendor/ present) - per the
  * instructions not to invent dependencies that aren't actually
  * available, these two helpers use dependency-free approaches instead:
  *
  *  - Excel: outputs an HTML <table> with an .xls filename and the
  *    'application/vnd.ms-excel' content type. Excel opens this
- *    correctly (it detects the HTML content, not the extension) — a
+ *    correctly (it detects the HTML content, not the extension) - a
  *    long-standing, reliable trick for CI3 projects without composer.
  *  - PDF: outputs a print-friendly HTML page in a new tab; the person
  *    uses the browser's own "Print -> Save as PDF". Not a true
  *    server-generated PDF file.
  *
  * If you later composer-require PhpSpreadsheet and/or Dompdf/TCPDF/
- * mPDF, these two functions are the only place that needs to change —
+ * mPDF, these two functions are the only place that needs to change -
  * every report controller calls them, not the export mechanics directly.
  */
 if (!function_exists('export_excel')) {

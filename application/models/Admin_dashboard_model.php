@@ -11,9 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * enforced here in the model layer (used by every admin controller),
  * not just hidden in the view.
  *
- * ASSUMPTIONS (documented rather than silently guessed — no shift/
+ * ASSUMPTIONS (documented rather than silently guessed - no shift/
  * schedule table exists yet in the schema):
- *  - "Total Karyawan" counts role IN ('EMPLOYEE','DRIVER') only —
+ *  - "Total Karyawan" counts role IN ('EMPLOYEE','DRIVER') only -
  *    admin accounts (SUPER_ADMIN/ADMIN_KANTOR) aren't "karyawan" being
  *    monitored for attendance.
  *  - "Belum Absen" = Total Karyawan - Hadir Hari Ini. There's no work-
@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *    expected attendee every day.
  *  - "Pengiriman Kendaraan Aktif" is scoped by the DRIVER's home
  *    office (employees.office_id), not the delivery's destination
- *    office — i.e. "kendaraan yang sedang dikirim oleh driver kantor
+ *    office - i.e. "kendaraan yang sedang dikirim oleh driver kantor
  *    saya", since that's the office an ADMIN_KANTOR actually manages
  *    staff for.
  */
@@ -45,7 +45,7 @@ class Admin_dashboard_model extends CI_Model
 
     /**
      * Jumlah karyawan yang punya titik tracking hari ini (attendance_tracking,
-     * per employee_id + tanggal) — sama dengan daftar di halaman Tracking
+     * per employee_id + tanggal) - sama dengan daftar di halaman Tracking
      * Aktif. Tidak lagi dihitung dari status absen masuk/pulang.
      */
     public function sedangTracking($officeId): int

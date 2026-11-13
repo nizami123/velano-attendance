@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Platform_Controller.php';
 
 /**
- * Master Perusahaan (tenant yang berlangganan) — CRUD penuh, HANYA untuk Super Global Admin.
+ * Master Perusahaan (tenant yang berlangganan) - CRUD penuh, HANYA untuk Super Global Admin.
  * Super Admin perusahaan / Admin Kantor tidak punya akses ke controller ini (lihat MY_Platform_Controller).
  */
 class Companies extends MY_Platform_Controller

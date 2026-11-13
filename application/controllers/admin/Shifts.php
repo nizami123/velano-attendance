@@ -8,7 +8,7 @@ require_once APPPATH . 'core/MY_Admin_Controller.php';
  * kantor itu). SUPER_ADMIN mengelola semua kantor; ADMIN_KANTOR hanya
  * shift kantornya sendiri (officeScope()).
  *
- * Halaman ini hanya menyentuh tabel `shifts` — tidak berpengaruh ke
+ * Halaman ini hanya menyentuh tabel `shifts` - tidak berpengaruh ke
  * absensi yang sedang berjalan.
  */
 class Shifts extends MY_Admin_Controller
@@ -31,7 +31,7 @@ class Shifts extends MY_Admin_Controller
         ));
     }
 
-    /** GET AJAX — list untuk DataTables (client-side). */
+    /** GET AJAX - list untuk DataTables (client-side). */
     public function list_data()
     {
         if (!$this->Shift_model->tablesReady()) return $this->json(array('data' => array()));
@@ -48,7 +48,7 @@ class Shifts extends MY_Admin_Controller
         $this->json(array('success' => true, 'data' => $row));
     }
 
-    /** POST AJAX — create atau update tergantung ada tidaknya 'id'. */
+    /** POST AJAX - create atau update tergantung ada tidaknya 'id'. */
     public function save()
     {
         if (!$this->Shift_model->tablesReady()) {

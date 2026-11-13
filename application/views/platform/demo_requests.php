@@ -112,7 +112,7 @@ $('rows').addEventListener('click', async e => {
   const r = data.find(x => x.id == b.dataset.id); if (!r) return;
   if (b.dataset.a === 'edit') {
     $('id').value = r.id; $('status').value = r.status; $('note').value = r.admin_note || '';
-    $('info').innerHTML = `<div><b>${esc(r.name)}</b> — ${esc(r.company_name)}</div><div class="text-gray">${esc(r.phone)}${r.email ? ' · ' + esc(r.email) : ''} · ${esc(r.employee_count || '-')} karyawan</div>${r.message ? `<div class="mt-2 p-2 bg-light rounded" style="white-space:pre-wrap">${esc(r.message)}</div>` : ''}`;
+    $('info').innerHTML = `<div><b>${esc(r.name)}</b> - ${esc(r.company_name)}</div><div class="text-gray">${esc(r.phone)}${r.email ? ' · ' + esc(r.email) : ''} · ${esc(r.employee_count || '-')} karyawan</div>${r.message ? `<div class="mt-2 p-2 bg-light rounded" style="white-space:pre-wrap">${esc(r.message)}</div>` : ''}`;
     modal.show();
   } else if (b.dataset.a === 'del') {
     if (!confirm('Hapus permintaan dari ' + r.name + ' (' + r.company_name + ')?')) return;

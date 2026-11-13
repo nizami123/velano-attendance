@@ -113,7 +113,7 @@ class Requests extends MY_Admin_Controller
         return null;
     }
 
-    /** POST admin/requests/update_overtime/{id} — ubah tanggal/jam lembur (PENDING atau APPROVED). */
+    /** POST admin/requests/update_overtime/{id} - ubah tanggal/jam lembur (PENDING atau APPROVED). */
     public function update_overtime($id)
     {
         $row = $this->Admin_request_model->getById((int) $id, $this->officeScope());
@@ -129,7 +129,7 @@ class Requests extends MY_Admin_Controller
         $this->json(array('success' => true, 'message' => 'Jam lembur diperbarui'));
     }
 
-    /** POST admin/requests/create_overtime — admin menginput lembur karyawan (langsung disetujui). */
+    /** POST admin/requests/create_overtime - admin menginput lembur karyawan (langsung disetujui). */
     public function create_overtime()
     {
         $employeeId = (int) $this->input->post('employee_id');

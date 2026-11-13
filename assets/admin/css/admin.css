@@ -1,5 +1,5 @@
 :root {
-	/* Primary brand green — matches the Velano logo */
+	/* Primary brand green - matches the Velano logo */
 	--at-primary: #048f38;
 	--at-primary-dark: #026530;
 	--at-primary-light: #e3f3e8;
@@ -10,7 +10,7 @@
 	--at-border: #e5e8eb;
 	--at-red: #e53935;
 	--at-red-light: #fdecea;
-	/* Semantic success color (approved/present badges) — kept green on
+	/* Semantic success color (approved/present badges) - kept green on
        purpose, independent of the brand primary color above, since
        green-for-success is a separate UI convention. */
 	--at-green: #048f38;
@@ -337,7 +337,9 @@ body {
 	background-color: #048f38;
 	border-color: #048f38;
 }
-.page-link { color: #048f38; }
+.page-link {
+	color: #048f38;
+}
 .page-item.active .page-link {
 	background-color: #048f38;
 	border-color: #048f38;
@@ -359,12 +361,39 @@ body {
 	--bs-btn-active-bg: #048f38;
 	--bs-btn-active-border-color: #048f38;
 }
-.text-primary { color: #048f38 !important; }
-.bg-primary { background-color: #048f38 !important; }
-.badge-at-gold, .at-accent { color: #49d82c; }
+.text-primary {
+	color: #048f38 !important;
+}
+.bg-primary {
+	background-color: #048f38 !important;
+}
+.badge-at-gold,
+.at-accent {
+	color: #49d82c;
+}
 
 /* Tombol ganti bahasa ID | EN */
-.at-lang { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 700; background: var(--at-light-gray, #f3f5f4); border-radius: 999px; padding: 3px 6px; color: #5b6b62; }
-.at-lang i { margin-right: 3px; }
-.at-lang a { color: inherit; text-decoration: none; padding: 2px 8px; border-radius: 999px; }
-.at-lang a.active { background: var(--at-primary, #048F38); color: #fff; }
+.at-lang {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	font-size: 12px;
+	font-weight: 700;
+	background: var(--at-light-gray, #f3f5f4);
+	border-radius: 999px;
+	padding: 3px 6px;
+	color: #5b6b62;
+}
+.at-lang i {
+	margin-right: 3px;
+}
+.at-lang a {
+	color: inherit;
+	text-decoration: none;
+	padding: 2px 8px;
+	border-radius: 999px;
+}
+.at-lang a.active {
+	background: var(--at-primary, #048f38);
+	color: #fff;
+}

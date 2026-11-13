@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Halaman admin "Tracking Karyawan". Sumber datanya HANYA tabel
- * attendance_tracking, dikunci ke employee_id + tanggal — tidak ada
+ * attendance_tracking, dikunci ke employee_id + tanggal - tidak ada
  * join/filter ke tabel attendances. Karyawan yang belum (atau tidak
  * pernah) absen tetap tampil selama ada titik trackingnya, dan
  * status absen masuk/pulang tidak memengaruhi apa yang tampil.
@@ -100,7 +100,7 @@ class Admin_tracking_model extends CI_Model
             ->result_array();
     }
 
-    /** Hanya titik terbaru — dipakai polling realtime 30 detik (query ringan, tanpa reload penuh). */
+    /** Hanya titik terbaru - dipakai polling realtime 30 detik (query ringan, tanpa reload penuh). */
     public function getLatestPoint(int $employeeId, string $date)
     {
         list($start, $end) = day_range($date);

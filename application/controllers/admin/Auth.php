@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Deliberately extends plain CI_Controller, not MY_Admin_Controller —
+ * Deliberately extends plain CI_Controller, not MY_Admin_Controller -
  * the login page is the one admin page that must be reachable WITHOUT
  * an active session (MY_Admin_Controller's constructor would redirect
  * straight back here in a loop otherwise).

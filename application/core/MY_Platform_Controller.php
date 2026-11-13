@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Basis panel SUPER GLOBAL ADMIN (pemilik layanan Velano).
  *
- *  - Autentikasi memakai tabel `global_admins` (sesi: global_admin_id) — terpisah total dari
+ *  - Autentikasi memakai tabel `global_admins` (sesi: global_admin_id) - terpisah total dari
  *    panel perusahaan (MY_Admin_Controller, tabel `employees`). Akun perusahaan tidak bisa membuka
  *    panel ini, dan Super Global Admin tidak bisa membuka panel perusahaan.
  *  - Semua request POST wajib membawa token CSRF sesi (header X-CSRF-Token atau field csrf_global).

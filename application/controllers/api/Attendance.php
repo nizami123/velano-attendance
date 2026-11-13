@@ -80,7 +80,7 @@ class Attendance extends MY_Controller
         ), 200);
     }
 
-    /** POST /api/attendance/check-out — mirrors check_in with checkout_radius. */
+    /** POST /api/attendance/check-out - mirrors check_in with checkout_radius. */
     public function check_out()
     {
         $employee = $this->require_auth();
@@ -153,7 +153,7 @@ class Attendance extends MY_Controller
         ), 200);
     }
 
-    /** GET /api/attendance/today?employee_id=... (employee_id ignored — always taken from token) */
+    /** GET /api/attendance/today?employee_id=... (employee_id ignored - always taken from token) */
     public function today()
     {
         $employee = $this->require_auth();
@@ -162,7 +162,7 @@ class Attendance extends MY_Controller
         $this->json_response($attendance ?: null, 200);
     }
 
-    /** GET /api/attendance/history?employee_id=... (employee_id ignored — always taken from token) */
+    /** GET /api/attendance/history?employee_id=... (employee_id ignored - always taken from token) */
     public function history()
     {
         $employee = $this->require_auth();

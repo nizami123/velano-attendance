@@ -8,7 +8,7 @@ class Offices extends MY_Controller
     /**
      * GET /api/offices
      * Returns every active office. This is the ONLY place office data
-     * comes from — the Android app never hardcodes an office (spec
+     * comes from - the Android app never hardcodes an office (spec
      * section 8/28), so adding a 5th, 10th, 100th office is purely a
      * database change.
      */

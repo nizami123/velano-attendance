@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Super Global Admin = pemilik layanan Velano.
  * Disimpan di tabel TERPISAH `global_admins` (bukan di `employees`), dan hanya boleh
- * mengelola data master perusahaan (tabel `companies`) — tidak punya company_id/kantor,
+ * mengelola data master perusahaan (tabel `companies`) - tidak punya company_id/kantor,
  * sehingga tidak otomatis terhubung ke data absensi perusahaan mana pun.
  */
 class Global_admin_model extends CI_Model

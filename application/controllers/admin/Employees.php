@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Admin_Controller.php';
 
 /**
- * Master Karyawan — role EMPLOYEE & DRIVER only. Admin accounts
+ * Master Karyawan - role EMPLOYEE & DRIVER only. Admin accounts
  * (SUPER_ADMIN/ADMIN_KANTOR) are managed separately on the User Admin
  * page (Admin_users.php) even though it's the same `employees` table.
  */
@@ -44,7 +44,7 @@ class Employees extends MY_Admin_Controller
         if (!$emp || !in_array($emp['role'], $this->roles, true)) {
             return $this->json(array('success' => false, 'message' => 'Karyawan tidak ditemukan'), 404);
         }
-        // Office-scope check for ADMIN_KANTOR — never trust the id from the URL alone.
+        // Office-scope check for ADMIN_KANTOR - never trust the id from the URL alone.
         if (!$this->canAccessOffice($emp['office_id'])) {
             return $this->json(array('success' => false, 'message' => 'Anda tidak berwenang atas data ini'), 403);
         }

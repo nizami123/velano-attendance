@@ -5,7 +5,7 @@ class Admin_delivery_model extends CI_Model
 {
     /**
      * $officeId scopes by the DRIVER's home office (employees.office_id)
-     * — same convention as the dashboard stat, see Admin_dashboard_model.
+     * - same convention as the dashboard stat, see Admin_dashboard_model.
      * "Kantor Tujuan" is a separate, independent filter field
      * ($filters['destination_office_id']), not the scoping boundary.
      */
@@ -69,7 +69,7 @@ class Admin_delivery_model extends CI_Model
     public function getById(int $id, $officeId)
     {
         // NOTE: destination_latitude/longitude/radius are NOT re-aliased
-        // from the joined office here — vehicle_deliveries.* already
+        // from the joined office here - vehicle_deliveries.* already
         // carries the authoritative values (denormalized at "Mulai
         // Pengiriman" time, whether the destination was a registered
         // office or a custom one), and aliasing dest.* over the top
@@ -105,7 +105,7 @@ class Admin_delivery_model extends CI_Model
     /**
      * Admin melengkapi titik koordinat (lat/lng) untuk tujuan bebas
      * (driver hanya menulis alamat lengkap saat "Mulai Pengiriman",
-     * tanpa geocoding di HP) — titik ini yang dipakai sebagai patokan
+     * tanpa geocoding di HP) - titik ini yang dipakai sebagai patokan
      * radius kedatangan ("Selesaikan Pengiriman") begitu tersimpan.
      * Radius opsional: kalau tidak diisi, radius yang sudah ada
      * (default 100 m) tetap dipakai.

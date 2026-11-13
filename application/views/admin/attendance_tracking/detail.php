@@ -2,7 +2,7 @@
     <a href="<?= site_url('admin/attendance_tracking?date=' . urlencode($tracking['tracking_date'])) ?>" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
     <div>
         <h4 class="fw-bold mb-0">Tracking Karyawan</h4>
-        <p class="text-gray small mb-0"><?= html_escape($tracking['employee_name']) ?> — <?= html_escape($tracking['tracking_date']) ?></p>
+        <p class="text-gray small mb-0"><?= html_escape($tracking['employee_name']) ?> - <?= html_escape($tracking['tracking_date']) ?></p>
     </div>
     <span id="liveBadge" class="badge-at badge-at-gray ms-auto"></span>
 </div>
@@ -32,7 +32,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Tracking berbasis employee_id + tanggal saja — tidak ada attendance_id
+    // Tracking berbasis employee_id + tanggal saja - tidak ada attendance_id
     // dan tidak ada mode "pending". Status aktif/selesai hanya soal
     // apakah tanggalnya hari ini, bukan soal absen masuk/pulang.
     const employeeId = <?= (int) $tracking['employee_id'] ?>;
@@ -89,11 +89,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Perbaikan: Total Titik & lastPointTime langsung diisi di sini,
         // SEBELUM proses gambar polyline/marker di peta. Sebelumnya baris
-        // ini ada di paling bawah fungsi ini — jadi kalau ADA SATU SAJA
+        // ini ada di paling bawah fungsi ini - jadi kalau ADA SATU SAJA
         // titik dengan lat/lng yang tidak valid (bikin Leaflet melempar
         // error "Invalid LatLng" saat bikin polyline/marker), seluruh
         // fungsi berhenti di tengah jalan (exception) dan baris ini
-        // (yang ada di bawah) tidak pernah kejalan — hasilnya "Total
+        // (yang ada di bawah) tidak pernah kejalan - hasilnya "Total
         // Titik" tetap kosong ("-") padahal datanya di database banyak.
         document.getElementById('totalPoints').textContent = points.length;
         lastPointTime = points[points.length - 1].recorded_at;
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
             map.fitBounds(bounds, { padding: [30, 30] });
         } catch (err) {
             // Total Titik sudah terisi di atas walau bagian gambar peta
-            // ini gagal — jadi admin tetap tahu jumlah titiknya, cuma
+            // ini gagal - jadi admin tetap tahu jumlah titiknya, cuma
             // petanya yang tidak bisa ditampilkan.
             console.error('Gagal menggambar titik tracking di peta:', err);
         }
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(err => console.error('Gagal memuat titik tracking:', err));
 
     // Realtime polling: only fetch the single latest point every 30s,
-    // and only re-render if it's actually new — never re-fetch the
+    // and only re-render if it's actually new - never re-fetch the
     // whole polyline on a timer.
     if (isToday) {
         var pollInterval = setInterval(function () {
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!res.success) return;
                     setBadge(res.is_active);
                     if (res.point && res.point.recorded_at !== lastPointTime) {
-                        // A genuinely new point arrived — reload the full polyline once to include it.
+                        // A genuinely new point arrived - reload the full polyline once to include it.
                         fetch(pointsUrl)
                             .then(r => r.json()).then(res2 => { if (res2.success) renderPoints(res2.data); });
                     }

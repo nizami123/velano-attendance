@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Admin_Controller.php';
 
 /**
- * Tracking Karyawan — seluruhnya berbasis employee_id + tanggal pada
+ * Tracking Karyawan - seluruhnya berbasis employee_id + tanggal pada
  * tabel attendance_tracking. Tidak ada lagi attendance_id maupun mode
  * "pending": karyawan yang belum absen pun tampil selama titik
  * trackingnya sudah masuk, dan absensi tidak memengaruhi halaman ini.
@@ -14,7 +14,7 @@ require_once APPPATH . 'core/MY_Admin_Controller.php';
  *   admin/attendance_tracking/detail/{employee_id}/{date} peta + rute satu karyawan pada satu tanggal
  *   ...points_data/{employee_id}/{date}                   AJAX: seluruh titik (polyline)
  *   ...latest_position/{employee_id}/{date}               AJAX: titik terbaru (polling 30 detik)
- * {date} opsional di semua URL — kosong berarti hari ini.
+ * {date} opsional di semua URL - kosong berarti hari ini.
  */
 class Attendance_tracking extends MY_Admin_Controller
 {
@@ -24,7 +24,7 @@ class Attendance_tracking extends MY_Admin_Controller
         $this->load->model('Admin_tracking_model');
     }
 
-    /** Sidebar entry "Tracking Karyawan" — semua karyawan yang punya titik tracking pada tanggal terpilih (default hari ini). */
+    /** Sidebar entry "Tracking Karyawan" - semua karyawan yang punya titik tracking pada tanggal terpilih (default hari ini). */
     public function index()
     {
         $date = $this->resolveDate($this->input->get('date'));
@@ -57,7 +57,7 @@ class Attendance_tracking extends MY_Admin_Controller
         ));
     }
 
-    /** GET AJAX — full polyline data for the map, loaded once when the page opens. */
+    /** GET AJAX - full polyline data for the map, loaded once when the page opens. */
     public function points_data($employeeId, $date = null)
     {
         $date = $this->resolveDate($date);
@@ -72,8 +72,8 @@ class Attendance_tracking extends MY_Admin_Controller
     }
 
     /**
-     * GET AJAX — realtime polling (every 30s from the browser). Only
-     * returns the single newest point, NOT the whole polyline again —
+     * GET AJAX - realtime polling (every 30s from the browser). Only
+     * returns the single newest point, NOT the whole polyline again -
      * keeps the "don't re-fetch everything every 30s" requirement.
      * is_active hanya berarti "tanggalnya masih hari ini" (tracking bisa
      * masih bertambah); tidak ada hubungannya dengan absen pulang.

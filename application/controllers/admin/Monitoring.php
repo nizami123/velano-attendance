@@ -26,7 +26,7 @@ class Monitoring extends MY_Admin_Controller
     }
 
     /**
-     * GET AJAX — lightweight: only current positions + a few fields,
+     * GET AJAX - lightweight: only current positions + a few fields,
      * called every 30s by the map page. Never returns full polylines.
      */
     public function positions_data()

@@ -72,11 +72,11 @@ class Deliveries extends MY_Admin_Controller
     }
 
     /**
-     * POST AJAX — admin melengkapi titik lat/lng untuk tujuan bebas
+     * POST AJAX - admin melengkapi titik lat/lng untuk tujuan bebas
      * (driver di aplikasi hanya menulis alamat lengkap, tanpa
      * geocoding di HP). Titik ini jadi patokan radius kedatangan.
      * Hanya berlaku untuk tujuan bebas (destination_office_id kosong)
-     * — tujuan berupa kantor terdaftar koordinatnya selalu mengikuti
+     * - tujuan berupa kantor terdaftar koordinatnya selalu mengikuti
      * Master Kantor, jadi tidak bisa/perlu diubah dari sini.
      */
     public function set_destination_point($id)
@@ -113,7 +113,7 @@ class Deliveries extends MY_Admin_Controller
 
     /**
      * Builds the delivery timeline strictly from columns that actually
-     * exist and are actually filled in for this row — no placeholder/
+     * exist and are actually filled in for this row - no placeholder/
      * dummy steps are ever added (per the spec: "Timeline harus dibuat
      * berdasarkan data yang benar-benar ada").
      */
@@ -133,7 +133,7 @@ class Deliveries extends MY_Admin_Controller
             $steps[] = array('time' => $points[0]['recorded_at'], 'label' => 'Tracking pertama', 'icon' => 'bi-geo-alt');
 
             // Show at most a handful of intermediate points to keep the
-            // timeline readable for long deliveries — the map (Tracking
+            // timeline readable for long deliveries - the map (Tracking
             // Kendaraan page) is where the full route is inspected.
             $middle = array_slice($points, 1, -1);
             if (count($middle) > 6) {
@@ -166,7 +166,7 @@ class Deliveries extends MY_Admin_Controller
             $steps[] = array('time' => $delivery['updated_at'], 'label' => 'Pengiriman selesai', 'icon' => 'bi-check-circle-fill');
         }
 
-        // Sort chronologically — the array is built roughly in order
+        // Sort chronologically - the array is built roughly in order
         // already, but this keeps it correct even with edge-case timing.
         usort($steps, function ($a, $b) {
             if ($a['time'] === null) return 1;

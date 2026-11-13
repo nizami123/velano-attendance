@@ -3,12 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Combines active employee attendance tracking AND active vehicle
- * delivery tracking into one list/map — this is the dedicated
+ * delivery tracking into one list/map - this is the dedicated
  * "Monitoring Aktif" page (TAHAP 8), distinct from (and complementary
  * to) the per-feature "Tracking Karyawan" / "Tracking Kendaraan" list
  * pages built in TAHAP 4/7. Not in the literal sidebar list you gave
  * me, but explicitly described in the spec body ("MONITORING AKTIF" /
- * "MAP MONITORING AKTIF") as its own feature — linked from the
+ * "MAP MONITORING AKTIF") as its own feature - linked from the
  * Dashboard's "Sedang Tracking" / "Pengiriman Aktif" stat cards and
  * added as its own sidebar entry. Flagged in ADMIN_README.md.
  */
@@ -19,7 +19,7 @@ class Admin_monitoring_model extends CI_Model
      *
      * Sumber datanya HANYA tabel attendance_tracking, dikunci ke
      * employee_id + tanggal hari ini: siapa pun yang punya titik dengan
-     * recorded_at hari ini (GMT+7) tampil di sini — sudah absen masuk,
+     * recorded_at hari ini (GMT+7) tampil di sini - sudah absen masuk,
      * sudah absen pulang, atau belum absen sama sekali. Tabel attendances
      * tidak dipakai sama sekali, jadi absensi tidak memengaruhi siapa
      * yang tampil. Satu baris per karyawan; posisi terakhirnya diambil
@@ -27,7 +27,7 @@ class Admin_monitoring_model extends CI_Model
      * recorded_at, jadi pasti tepat satu baris).
      *
      * Pakai $this->db->query() mentah (bukan query builder) karena butuh
-     * subquery di klausa FROM — kalau lewat ->from() query builder CI
+     * subquery di klausa FROM - kalau lewat ->from() query builder CI
      * akan mencoba "protect_identifiers" string subquery itu dan bisa
      * merusak SQL-nya.
      */

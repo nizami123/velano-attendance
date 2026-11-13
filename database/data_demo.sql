@@ -1,5 +1,5 @@
 -- =====================================================================
--- VELANO — DATA DEMO
+-- VELANO - DATA DEMO
 -- Membuat DUA perusahaan contoh supaya pembatasan data per peran/perusahaan bisa dicoba:
 --   1) PT Demo Maju Jaya   (kode DEMO)  : 3 kantor, 14 karyawan + 1 driver, absensi, shift, pengajuan, pengiriman
 --   2) CV Contoh Sejahtera (kode DEMO2) : 1 kantor, 2 karyawan  -> data TIDAK boleh terlihat oleh admin PT Demo
@@ -213,7 +213,7 @@ SELECT @dlv, @driver,
        NOW() - INTERVAL (50 - t.n * 10) MINUTE, NOW() - INTERVAL (50 - t.n * 10) MINUTE, NOW() - INTERVAL (50 - t.n * 10) MINUTE
 FROM (SELECT 0 n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) t;
 
--- ---------- 12. Perusahaan kedua (DEMO2) — untuk menguji isolasi data antar perusahaan ----------
+-- ---------- 12. Perusahaan kedua (DEMO2) - untuk menguji isolasi data antar perusahaan ----------
 INSERT INTO companies (code, name, contact_name, contact_email, contact_phone, plan, status, max_employees, max_offices, valid_until, created_at)
 VALUES ('DEMO2', 'CV Contoh Sejahtera', 'Bos Contoh', 'bos@contoh.id', '081300000001', 'STARTER', 'ACTIVE', 50, 3, NOW() + INTERVAL 365 DAY, NOW());
 SET @c2 := LAST_INSERT_ID();

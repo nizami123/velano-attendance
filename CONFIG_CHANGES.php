@@ -1,13 +1,13 @@
 <?php
 /**
- * File ini BUKAN config.php penuh — CodeIgniter 3 sudah menyediakan
+ * File ini BUKAN config.php penuh - CodeIgniter 3 sudah menyediakan
  * application/config/config.php lengkap saat Anda download frameworknya.
  * Ini hanya daftar baris yang perlu Anda UBAH di file itu supaya API
  * ini berjalan dengan benar untuk aplikasi Android (JSON, tanpa index.php
  * di URL, tanpa proteksi CSRF berbasis form/cookie).
  */
 
-// 1) Base URL — sesuaikan dengan lokasi folder backend Anda
+// 1) Base URL - sesuaikan dengan lokasi folder backend Anda
 $config['base_url'] = 'http://192.168.1.100/employee-tracker-backend/';
 // Gunakan IP LAN komputer Anda (bukan "localhost"/127.0.0.1) supaya bisa
 // diakses dari HP/emulator yang terhubung ke jaringan yang sama.

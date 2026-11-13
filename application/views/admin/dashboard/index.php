@@ -94,7 +94,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const primary = '#048F38';
     // palette[3] intentionally distinct from palette[0] (both used
-    // together in the "Pengiriman Kendaraan" doughnut chart below) —
+    // together in the "Pengiriman Kendaraan" doughnut chart below) -
     // teal instead of another blue so the two slices stay visually
     // distinguishable now that the brand primary color is blue too.
     const palette = ['#048F38', '#F5A623', '#E53935', '#17A2B8', '#8A8F98'];

@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * IMPORTANT (spec section 25): every controller that touches
  * employee-specific or office-specific data MUST call require_auth()
- * and then filter queries by the employee's own id / office_id — never
+ * and then filter queries by the employee's own id / office_id - never
  * trust an employee_id or office_id sent from the client body/query
  * without cross-checking it against the authenticated employee.
  */

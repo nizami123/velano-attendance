@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Admin_Controller.php';
 
 /**
- * Master Hari Libur — dipakai untuk menandai tanggal merah di
+ * Master Hari Libur - dipakai untuk menandai tanggal merah di
  * Export PDF Rekap Absensi (Kalender Bulanan) dan perhitungan "Hari
  * Kerja"-nya.
  *
@@ -31,7 +31,7 @@ class Holidays extends MY_Admin_Controller
         ));
     }
 
-    /** GET AJAX — list untuk DataTables (client-side; jumlah data kecil). */
+    /** GET AJAX - list untuk DataTables (client-side; jumlah data kecil). */
     public function list_data()
     {
         $rows = $this->Holiday_model->getAll($this->officeScope(), $this->companyId(), $this->isSuperAdmin());
@@ -51,7 +51,7 @@ class Holidays extends MY_Admin_Controller
         $this->json(array('success' => true, 'data' => $row));
     }
 
-    /** POST AJAX — create atau update tergantung ada tidaknya 'id'. */
+    /** POST AJAX - create atau update tergantung ada tidaknya 'id'. */
     public function save()
     {
         $id = (int) $this->input->post('id');

@@ -96,7 +96,7 @@ class Admin_request_model extends CI_Model
         return $this->db->get()->row_array();
     }
 
-    /** Zona waktu (WIB/WITA/WIT) kantor pengaju — approved_at/updated_at disimpan di zona yang sama dengan created_at pengajuan. */
+    /** Zona waktu (WIB/WITA/WIT) kantor pengaju - approved_at/updated_at disimpan di zona yang sama dengan created_at pengajuan. */
     private function requestTimezone(int $id): string
     {
         $row = $this->db->select('offices.timezone')
@@ -124,10 +124,10 @@ class Admin_request_model extends CI_Model
      *
      * LATE / LEAVE / OUTSIDE_OFFICE / OVERTIME: hanya menyetujui (perilaku lama, tidak berubah).
      * OVERTIME yang APPROVED otomatis muncul sebagai keterangan Lembur di Kalender Absensi,
-     * History Absensi (admin) dan History (aplikasi karyawan) — dibaca langsung dari attendance_requests.
+     * History Absensi (admin) dan History (aplikasi karyawan) - dibaca langsung dari attendance_requests.
      *
      * CHECK_IN (Pengajuan Masuk) dan CHECK_OUT (Pengajuan Pulang): jam pada pengajuan
-     * dicatat ke `attendances` pada tanggal pengajuan —
+     * dicatat ke `attendances` pada tanggal pengajuan -
      *   - sudah ada baris absensi hari itu -> UPDATE jam masuk / jam pulang saja (kolom lain tidak disentuh);
      *   - belum ada baris absensi hari itu -> INSERT baris baru berisi jam tersebut saja;
      *   - jam yang sama sudah terisi       -> TIDAK ditimpa, pengajuan tetap disetujui (ada catatan).
@@ -135,7 +135,7 @@ class Admin_request_model extends CI_Model
      * jadi tidak pernah ada pengajuan "disetujui" yang tidak tercatat.
      *
      * Urutan jam dijaga: jam pulang tidak boleh lebih awal dari jam masuk (dan sebaliknya) pada
-     * baris yang sama — kalau begitu ACC ditolak dengan pesan. Pengecualian shift malam (lintas
+     * baris yang sama - kalau begitu ACC ditolak dengan pesan. Pengecualian shift malam (lintas
      * tengah malam): jam pulang dini hari dianggap hari berikutnya.
      *
      * @return array{ok:bool,message:string}
@@ -219,7 +219,7 @@ class Admin_request_model extends CI_Model
     }
 
     // ------------------------------------------------------------------
-    // Lembur (OVERTIME) — diubah / diinput langsung oleh admin
+    // Lembur (OVERTIME) - diubah / diinput langsung oleh admin
     // ------------------------------------------------------------------
 
     /** "HH:mm" / "HH:mm:ss" -> "HH:mm:ss"; null bila format tidak valid. */

@@ -85,7 +85,7 @@ if (!function_exists('office_timezone')) {
 }
 
 if (!function_exists('office_tz_label')) {
-    /** Label WIB/WITA/WIT langsung dari kode zona kantor (kolom offices.timezone) — dipakai di tampilan admin. */
+    /** Label WIB/WITA/WIT langsung dari kode zona kantor (kolom offices.timezone) - dipakai di tampilan admin. */
     function office_tz_label($officeTimezone): string
     {
         return tz_label($officeTimezone);
@@ -176,7 +176,7 @@ if (!function_exists('normalize_client_datetime')) {
      * dengan jam server (di zona karyawan) tidak lebih dari
      * $toleranceSeconds. Kalau tidak (format salah, jam HP ngawur, atau
      * aplikasi versi lama yang masih mengirim jam WIB untuk karyawan WIT),
-     * dipakai jam server di zona karyawan — jadi data yang masuk selalu
+     * dipakai jam server di zona karyawan - jadi data yang masuk selalu
      * konsisten dengan WIB/WIT yang benar.
      */
     function normalize_client_datetime($value, string $tz, int $toleranceSeconds = 600): string
@@ -202,7 +202,7 @@ if (!function_exists('valid_date_string')) {
 
 if (!function_exists('day_range')) {
     /**
-     * Batas satu hari untuk query tracking: [awal, akhir) — awal = 00:00:00
+     * Batas satu hari untuk query tracking: [awal, akhir) - awal = 00:00:00
      * tanggal itu, akhir = 00:00:00 hari berikutnya.
      *
      * Tracking dicari per employee_id + tanggal. Sengaja dipakai sebagai
@@ -332,7 +332,7 @@ if (!function_exists('save_base64_photo')) {
     /**
      * Decodes a base64 JPEG string from the Android app and mengirimnya ke
      * hosting foto folder attendance_photos/. Returns the stored filename
-     * (relative — URL lengkap lewat attendance_photo_url()), or null on failure.
+     * (relative - URL lengkap lewat attendance_photo_url()), or null on failure.
      */
     function save_base64_photo(string $base64, string $prefix): ?string
     {
@@ -349,7 +349,7 @@ if (!function_exists('save_base64_photo')) {
 
 if (!function_exists('save_base64_attachment')) {
     /**
-     * Decodes a base64 file (image OR PDF — used by the Lampiran field
+     * Decodes a base64 file (image OR PDF - used by the Lampiran field
      * on Pengajuan, which lets the person either pick an existing file
      * or take a photo with the camera) and saves it under
      * hosting foto folder request_attachments/. Only jpg/jpeg/png/pdf extensions are

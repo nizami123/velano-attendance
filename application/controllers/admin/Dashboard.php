@@ -32,7 +32,7 @@ class Dashboard extends MY_Admin_Controller
         ));
     }
 
-    /** GET /admin/dashboard/chart_kehadiran — AJAX, for the "kehadiran beberapa hari terakhir" chart. */
+    /** GET /admin/dashboard/chart_kehadiran - AJAX, for the "kehadiran beberapa hari terakhir" chart. */
     public function chart_kehadiran()
     {
         $rows = $this->Admin_dashboard_model->kehadiranTerakhir($this->officeScope(), 7);

@@ -7,7 +7,7 @@
     <i class="bi bi-info-circle-fill mt-1"></i>
     <div>
         Halaman ini <strong>read-only</strong>. Sistem belum memiliki tabel master kendaraan
-        tersendiri — data berikut diturunkan dari riwayat <em>Pengiriman Kendaraan</em>
+        tersendiri - data berikut diturunkan dari riwayat <em>Pengiriman Kendaraan</em>
         (dikelompokkan berdasarkan nomor mesin &amp; nomor rangka). Kendaraan baru otomatis
         muncul di sini setelah driver melakukan pengiriman pertama kalinya lewat aplikasi.
     </div>

@@ -3,13 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * NOTE on "Izin" vs "Cuti": the actual schema only has ONE request
- * type for both — `attendance_requests.type = 'LEAVE'` — there is no
+ * type for both - `attendance_requests.type = 'LEAVE'` - there is no
  * separate CUTI/IZIN distinction in the database (see
  * ADMIN_README.md). This report merges them into a single "Izin/Cuti"
  * figure rather than inventing a column/value that doesn't exist.
  *
  * NOTE on jam kerja / "Tidak Hadir" / "Terlambat": jam kerja per tanggal
- * ditentukan oleh Shift_model::resolveDay() — jadwal shift karyawan bila
+ * ditentukan oleh Shift_model::resolveDay() - jadwal shift karyawan bila
  * ada, kalau tidak ada jadwal memakai jam normal (Senin-Jumat 08:00-16:30,
  * Sabtu 08:00-12:30, Minggu & hari libur master = libur). "Terlambat" =
  * check-in lewat jam mulai hari itu (+1 menit toleransi), "Tidak Hadir" =
@@ -213,7 +213,7 @@ class Admin_report_model extends CI_Model
     /**
      * Daftar pegawai untuk digenerate 1 halaman kalender per pegawai.
      * Jika $employeeId diisi, hanya kembalikan pegawai tersebut
-     * (terlepas dari status aktif/nonaktif — memilih 1 pegawai secara
+     * (terlepas dari status aktif/nonaktif - memilih 1 pegawai secara
      * eksplisit selalu ditampilkan). Kalau tidak, hanya pegawai AKTIF,
      * opsional difilter per kantor ($officeId null = semua kantor).
      */
@@ -252,7 +252,7 @@ class Admin_report_model extends CI_Model
 
     /**
      * tanggal (Y-m-d) => true untuk setiap tanggal yang tercakup oleh
-     * pengajuan LEAVE (Izin/Cuti — schema tidak membedakan keduanya,
+     * pengajuan LEAVE (Izin/Cuti - schema tidak membedakan keduanya,
      * lihat catatan di atas) yang sudah APPROVED dan beririsan dengan
      * rentang tanggal kalender.
      */
@@ -375,7 +375,7 @@ class Admin_report_model extends CI_Model
         return $this->db->get()->result_array();
     }
 
-    /** No CANCELLED status exists in the schema — see ADMIN_README.md. Always 0, kept in the shape for spec parity. */
+    /** No CANCELLED status exists in the schema - see ADMIN_README.md. Always 0, kept in the shape for spec parity. */
     public function deliverySummary(array $rows): array
     {
         $summary = array('total' => count($rows), 'IN_PROGRESS' => 0, 'ARRIVED' => 0, 'COMPLETED' => 0, 'CANCELLED' => 0);

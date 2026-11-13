@@ -17,7 +17,7 @@ class Tracking_model extends CI_Model
      * Each row is a separate INSERT IGNORE wrapped in its own try/catch:
      * one bad/failing row (a transient DB error, a lock timeout, an
      * unexpected value) must never abort the rest of the batch or leave
-     * the caller unable to tell which points made it in — Tracking::sync()
+     * the caller unable to tell which points made it in - Tracking::sync()
      * only reports back the localIds returned here as synced, so the
      * Android app keeps retrying anything that isn't in this list instead
      * of wrongly deleting/marking-synced a point that was never saved.
@@ -45,7 +45,7 @@ class Tracking_model extends CI_Model
                 if ($success) {
                     // INSERT IGNORE: $success is true even when the row
                     // was a duplicate of one already stored (unique_tracking
-                    // on employee_id + recorded_at) — that still counts as
+                    // on employee_id + recorded_at) - that still counts as
                     // "safely in the database", so it's correct to report
                     // it as synced either way.
                     $syncedLocalIds[] = $row['localId'];
@@ -53,7 +53,7 @@ class Tracking_model extends CI_Model
                     log_message('error', 'Tracking insert returned false: employee_id=' . $row['employee_id'] . ' recorded_at=' . $row['recorded_at']);
                 }
             } catch (\Throwable $e) {
-                log_message('error', 'Tracking insert threw: employee_id=' . $row['employee_id'] . ' recorded_at=' . $row['recorded_at'] . ' — ' . $e->getMessage());
+                log_message('error', 'Tracking insert threw: employee_id=' . $row['employee_id'] . ' recorded_at=' . $row['recorded_at'] . ' - ' . $e->getMessage());
             }
         }
 

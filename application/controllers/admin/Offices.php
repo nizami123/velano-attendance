@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Admin_Controller.php';
 
 /**
- * Master Kantor. Full CRUD — offices is genuinely a standalone master
+ * Master Kantor. Full CRUD - offices is genuinely a standalone master
  * table already in the schema (spec section 19 of the original
  * Android/API build), so this is a normal CRUD unlike Kendaraan.
  */
@@ -24,7 +24,7 @@ class Offices extends MY_Admin_Controller
         ));
     }
 
-    /** GET AJAX — list for DataTables (client-side; office count is small). */
+    /** GET AJAX - list for DataTables (client-side; office count is small). */
     public function list_data()
     {
         // SUPER_ADMIN: semua kantor; ADMIN_KANTOR: hanya kantor yang menjadi aksesnya.
@@ -38,7 +38,7 @@ class Offices extends MY_Admin_Controller
         $this->json(array('success' => true, 'data' => $office));
     }
 
-    /** POST AJAX — create or update depending on whether 'id' is present. */
+    /** POST AJAX - create or update depending on whether 'id' is present. */
     public function save()
     {
         if (!$this->isSuperAdmin()) {

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Admin_Controller.php';
 
 /**
- * "Master Kendaraan" — read-only. See ADMIN_README.md: no standalone
+ * "Master Kendaraan" - read-only. See ADMIN_README.md: no standalone
  * `vehicles` table exists yet, so this derives a distinct vehicle list
  * from `vehicle_deliveries` history instead of inventing a new table.
  */

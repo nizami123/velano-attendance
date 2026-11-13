@@ -4,11 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'core/MY_Admin_Controller.php';
 
 /**
- * Master User Admin — role SUPER_ADMIN & ADMIN_KANTOR, same
+ * Master User Admin - role SUPER_ADMIN & ADMIN_KANTOR, same
  * `employees` table as everything else (no separate admin_users
  * table). Restricted entirely to SUPER_ADMIN: an ADMIN_KANTOR should
  * not be able to create/edit/see other admin accounts, including
- * their own office's — that's a SUPER_ADMIN-level responsibility.
+ * their own office's - that's a SUPER_ADMIN-level responsibility.
  *
  * Akses multi-kantor: SUPER_ADMIN menentukan satu atau lebih kantor
  * untuk tiap ADMIN_KANTOR (tabel admin_offices). SUPER_ADMIN sendiri

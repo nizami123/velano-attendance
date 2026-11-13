@@ -2,7 +2,7 @@
     <a href="<?= site_url('admin/deliveries') ?>" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
     <div>
         <h4 class="fw-bold mb-0">Detail Pengiriman</h4>
-        <p class="text-gray small mb-0"><?= html_escape($delivery['brand']) ?> <?= html_escape($delivery['vehicle_type']) ?> — <?= html_escape($delivery['driver_name']) ?></p>
+        <p class="text-gray small mb-0"><?= html_escape($delivery['brand']) ?> <?= html_escape($delivery['vehicle_type']) ?> - <?= html_escape($delivery['driver_name']) ?></p>
     </div>
     <?php
     $statusMap = array('IN_PROGRESS' => ['Dalam Perjalanan', 'badge-at-blue'], 'ARRIVED' => ['Sampai Tujuan', 'badge-at-orange'], 'COMPLETED' => ['Selesai', 'badge-at-green']);
@@ -68,7 +68,7 @@
     <h6 class="fw-bold mb-1"><i class="bi bi-geo-alt me-1"></i>Titik Koordinat Tujuan</h6>
     <p class="text-gray small mb-3">
         Tujuan pengiriman ini adalah alamat bebas yang ditulis driver, bukan kantor terdaftar.
-        Driver hanya mengisi alamat lengkapnya — isi/perbarui titik lat &amp; lng di sini sebagai
+        Driver hanya mengisi alamat lengkapnya - isi/perbarui titik lat &amp; lng di sini sebagai
         patokan radius kedatangan (validasi "Selesaikan Pengiriman" di aplikasi driver memakai titik ini).
         Selama titik ini belum diisi, pengiriman boleh diselesaikan driver tanpa pengecekan radius.
     </p>

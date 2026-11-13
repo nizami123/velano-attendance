@@ -89,7 +89,7 @@ $route['api/tracking/sync']['post']        = 'api/tracking/sync';
 $route['api/requests']['post'] = 'api/requests/create';
 $route['api/requests']['get']  = 'api/requests/index';
 
-// --- Deliveries (Pengiriman Kendaraan — role DRIVER) ---
+// --- Deliveries (Pengiriman Kendaraan - role DRIVER) ---
 $route['api/deliveries/start']['post']    = 'api/deliveries/start';
 $route['api/deliveries/complete']['post'] = 'api/deliveries/complete';
 $route['api/deliveries/active']['get']    = 'api/deliveries/active';

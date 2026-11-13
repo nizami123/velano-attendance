@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-// URL folder (harus diakhiri "/") — dipakai untuk menampilkan file di web admin.
+// URL folder (harus diakhiri "/") - dipakai untuk menampilkan file di web admin.
 $config['photo_base_url']      = 'https://samsu.samuderasuri.com/tracker/attendance_photos/';
 $config['attachment_base_url'] = 'https://samsu.samuderasuri.com/tracker/request_attachments/';
 

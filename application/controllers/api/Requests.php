@@ -27,7 +27,7 @@ class Requests extends MY_Controller
         if (empty($reason)) {
             return $this->json_response(array('success' => false, 'message' => 'Alasan wajib diisi'), 422);
         }
-        // Lampiran WAJIB diisi (via pilih file atau kamera di Android) —
+        // Lampiran WAJIB diisi (via pilih file atau kamera di Android) -
         // divalidasi ulang di server, tidak cukup hanya di aplikasi.
         if (empty($attachmentBase64)) {
             return $this->json_response(array('success' => false, 'message' => 'Lampiran wajib diisi'), 422);
@@ -40,7 +40,7 @@ class Requests extends MY_Controller
         }
 
         // Lembur: jam mulai (time) & jam selesai (end_time) wajib, selesai harus setelah mulai.
-        // Selalu PENDING — baru berlaku di kalender absen & history setelah di-ACC admin.
+        // Selalu PENDING - baru berlaku di kalender absen & history setelah di-ACC admin.
         $endTime = null;
         if ($type === 'OVERTIME') {
             $startTime = $this->normalizeTime($body['time'] ?? null);
@@ -60,7 +60,7 @@ class Requests extends MY_Controller
         }
 
         // Absen Luar Kantor (dinas luar) is auto-approved the instant it's
-        // submitted — no admin action needed. Every other type still goes
+        // submitted - no admin action needed. Every other type still goes
         // through the normal PENDING -> admin approve/reject flow.
         $isOutsideOffice = $type === 'OUTSIDE_OFFICE';
 
@@ -100,7 +100,7 @@ class Requests extends MY_Controller
      *   - Already checked in today (normal check-in OR an earlier Absen
      *     Luar Kantor) but not checked out yet -> counts as that day's
      *     check-out. Perbaikan: check-out (including this one) no longer
-     *     stops tracking on the client — EmployeeTrackingCoordinator.
+     *     stops tracking on the client - EmployeeTrackingCoordinator.
      *     adoptServerAttendance() on Android keeps tracking running under
      *     the same attendance id until the day rolls over at 00:00 WIB.
      *   - Already checked in AND out today -> nothing left to touch;
@@ -125,7 +125,7 @@ class Requests extends MY_Controller
                 'check_out_latitude'  => $latitude,
                 'check_out_longitude' => $longitude,
                 'check_out_accuracy'  => null,
-                'check_out_distance'  => null, // luar kantor — jarak dari kantor tidak relevan
+                'check_out_distance'  => null, // luar kantor - jarak dari kantor tidak relevan
                 'updated_at'          => now_datetime($tz),
             ));
             return;
@@ -140,7 +140,7 @@ class Requests extends MY_Controller
             'check_in_latitude'  => $latitude,
             'check_in_longitude' => $longitude,
             'check_in_accuracy'  => null,
-            'check_in_distance'  => null, // luar kantor — jarak dari kantor tidak relevan
+            'check_in_distance'  => null, // luar kantor - jarak dari kantor tidak relevan
             'status'             => 'PRESENT',
             'created_at'         => now_datetime($tz),
         ));
@@ -155,7 +155,7 @@ class Requests extends MY_Controller
         return sprintf('%02d:%02d:%02d', (int) $m[1], (int) $m[2], isset($m[3]) ? (int) $m[3] : 0);
     }
 
-    /** GET /api/requests — always scoped to the authenticated employee. */
+    /** GET /api/requests - always scoped to the authenticated employee. */
     public function index()
     {
         $employee = $this->require_auth();

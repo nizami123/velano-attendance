@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * There is NO standalone `vehicles` master table in the schema —
+ * There is NO standalone `vehicles` master table in the schema -
  * vehicle identity (engine/chassis number, brand, type, color) is
  * captured per-delivery in `vehicle_deliveries`. This model derives a
  * distinct vehicle listing from that history instead of inventing a

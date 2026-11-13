@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin_employee_model extends CI_Model
 {
     /**
-     * $roles filters which accounts this query is for — Karyawan page
+     * $roles filters which accounts this query is for - Karyawan page
      * uses ['EMPLOYEE','DRIVER'], User Admin page uses
      * ['SUPER_ADMIN','ADMIN_KANTOR']. Same table, two different views
      * on it, matching the two separate sidebar menu items.

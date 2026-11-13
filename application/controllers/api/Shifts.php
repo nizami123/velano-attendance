@@ -8,7 +8,7 @@ require_once APPPATH . 'core/MY_Controller.php';
  *
  * Endpoint ini HANYA MEMBACA. Check-in / check-out (Attendance.php)
  * tidak memanggil apa pun dari sini, jadi shift tidak bisa mengubah
- * perilaku absensi yang sudah berjalan — ini murni informasi jadwal
+ * perilaku absensi yang sudah berjalan - ini murni informasi jadwal
  * yang ditampilkan di Beranda.
  *
  * Karyawan & kantor SELALU diambil dari token (require_auth), tidak

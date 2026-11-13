@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Perusahaan (tenant) — data master yang HANYA boleh di-CRUD oleh Super Global Admin (panel /platform/companies).
+ * Perusahaan (tenant) - data master yang HANYA boleh di-CRUD oleh Super Global Admin (panel /platform/companies).
  * Semua data (kantor, karyawan, admin, libur) memiliki company_id.
  *
  * Status "layak pakai" sebuah perusahaan = status ACTIVE dan (valid_until kosong ATAU belum lewat).

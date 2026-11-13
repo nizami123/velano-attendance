@@ -77,7 +77,7 @@ class Holiday_model extends CI_Model
      * tanggal (Y-m-d) => nama libur, gabungan libur nasional (office_id
      * NULL) dan libur milik $officeId, untuk satu rentang tanggal.
      * $officeId di sini WAJIB kantor pegawai yang bersangkutan (bukan
-     * hasil filter "ALL" pada halaman laporan) — dipanggil sekali per
+     * hasil filter "ALL" pada halaman laporan) - dipanggil sekali per
      * pegawai saat generate kalender.
      * Jika satu tanggal punya libur nasional & libur kantor sekaligus,
      * nama libur kantor yang ditampilkan (lebih spesifik untuk pegawai

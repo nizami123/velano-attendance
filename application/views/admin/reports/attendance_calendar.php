@@ -55,7 +55,7 @@
 <div class="at-card">
     <p class="text-gray small mb-0">
         <i class="bi bi-printer me-1"></i>
-        PDF akan terbuka di tab baru dan otomatis membuka dialog cetak — pilih "Save as PDF" / "Simpan sebagai PDF" pada tujuan printer,
+        PDF akan terbuka di tab baru dan otomatis membuka dialog cetak - pilih "Save as PDF" / "Simpan sebagai PDF" pada tujuan printer,
         lalu atur orientasi ke <strong>Landscape</strong> dan kertas <strong>A4</strong> jika belum otomatis terisi.
     </p>
 </div>

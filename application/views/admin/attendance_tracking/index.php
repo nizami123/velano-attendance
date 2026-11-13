@@ -1,7 +1,7 @@
 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
     <div>
         <h4 class="fw-bold mb-0">Tracking Karyawan</h4>
-        <p class="text-gray small mb-0">Karyawan yang punya titik tracking pada tanggal terpilih — tidak bergantung pada absensi (belum absen pun tetap tampil).</p>
+        <p class="text-gray small mb-0">Karyawan yang punya titik tracking pada tanggal terpilih - tidak bergantung pada absensi (belum absen pun tetap tampil).</p>
     </div>
     <form method="get" action="<?= site_url('admin/attendance_tracking') ?>" class="d-flex align-items-center gap-2">
         <input type="date" name="date" class="form-control form-control-sm" value="<?= html_escape($trackingDate) ?>" max="<?= html_escape(date('Y-m-d')) ?>">
