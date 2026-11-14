@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 render: row => `<button class="btn btn-sm btn-outline-at-primary btn-detail" data-id="${row.id}"><i class="bi bi-eye me-1"></i>Detail</button>`
             }
         ],
-        language: { url: 'https://cdn.datatables.net/plug-ins/1.13.11/i18n/id.json' }
+        language: { url: '<?= base_url('assets/vendor/datatables-' . app_lang() . '.json') ?>' }
     });
 
     document.getElementById('filterForm').addEventListener('submit', function (e) { e.preventDefault(); table.ajax.reload(); });

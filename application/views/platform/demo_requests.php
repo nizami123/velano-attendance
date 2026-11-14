@@ -4,8 +4,8 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Permintaan Demo | Velano Super Global Admin</title>
 <link rel="icon" type="image/png" href="<?= base_url('assets/admin/img/logo.png') ?>">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="<?= base_url('assets/vendor/bootstrap.min.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/vendor/bootstrap-icons.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/admin/css/admin.css') ?>">
 </head>
 <body style="background:var(--at-light-gray);">
@@ -62,7 +62,7 @@
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3"><div id="toast" class="toast align-items-center text-bg-dark border-0" role="status"><div class="d-flex"><div class="toast-body" id="toastBody"></div></div></div></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('assets/vendor/bootstrap.bundle.min.js') ?>"></script>
 <script>
 const CSRF = <?= json_encode($csrf) ?>;
 const STATUSES = <?= json_encode($statuses) ?>;

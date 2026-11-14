@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 render: row => `<button class="btn btn-sm btn-outline-at-primary btn-history" data-engine="${row.engine_number}"><i class="bi bi-clock-history me-1"></i>Riwayat</button>`
             }
         ],
-        language: { url: 'https://cdn.datatables.net/plug-ins/1.13.11/i18n/id.json' }
+        language: { url: '<?= base_url('assets/vendor/datatables-' . app_lang() . '.json') ?>' }
     });
 
     $('#tblVehicles tbody').on('click', '.btn-history', function () {

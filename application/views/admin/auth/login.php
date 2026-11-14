@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin - Velano</title>
     <link rel="icon" type="image/png" href="<?= base_url('assets/admin/img/logo.png') ?>">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/vendor/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/vendor/bootstrap-icons.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/admin.css') ?>">
 </head>
 <body>
@@ -41,13 +41,12 @@
         </form>
 
         <p class="text-center text-gray small mt-4 mb-0">
-            Untuk Super Global Admin, Super Admin perusahaan, dan Admin Kantor.<br>
             Belum berlangganan? Hubungi tim Velano untuk dibuatkan akun perusahaan.
         </p>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('assets/vendor/bootstrap.bundle.min.js') ?>"></script>
 <script>
 document.getElementById('atTogglePassword').addEventListener('click', function () {
     const input = document.getElementById('atPassword');

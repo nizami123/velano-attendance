@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 `
             }
         ],
-        language: { url: 'https://cdn.datatables.net/plug-ins/1.13.11/i18n/id.json' }
+        language: { url: '<?= base_url('assets/vendor/datatables-' . app_lang() . '.json') ?>' }
     });
 
     document.getElementById('btnAddAdmin').addEventListener('click', function () {

@@ -7,13 +7,13 @@
     <link rel="icon" type="image/png" href="<?= base_url('assets/admin/img/logo.png') ?>">
 
     <!-- Bootstrap 5 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/vendor/bootstrap.min.css') ?>">
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/vendor/bootstrap-icons.min.css') ?>">
     <!-- DataTables (Bootstrap 5 styling) -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/vendor/dataTables.bootstrap5.min.css') ?>">
     <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="<?= base_url('assets/vendor/leaflet.css') ?>" onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'">
 
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/admin.css') ?>">
 </head>
