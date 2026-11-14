@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="<?= app_lang() ?>">
 <head>
     <meta charset="UTF-8">
     <title>Laporan Pengajuan</title>

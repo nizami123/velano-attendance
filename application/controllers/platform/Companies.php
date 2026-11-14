@@ -60,7 +60,7 @@ class Companies extends MY_Platform_Controller
         if (empty(Company_model::$plans[$plan]['available'])) {
             $current = $id > 0 ? $this->Company_model->getById($id) : null;
             if (!$current || $current['plan'] !== $plan) {
-                return $this->json(array('success' => false, 'message' => 'Paket ' . Company_model::$plans[$plan]['label'] . ' belum tersedia'), 422);
+                return $this->json(array('success' => false, 'message' => sprintf(t('Paket %s belum tersedia'), Company_model::$plans[$plan]['label'])), 422);
             }
         }
         if ($maxEmp < 1) return $this->json(array('success' => false, 'message' => 'Batas karyawan minimal 1'), 422);

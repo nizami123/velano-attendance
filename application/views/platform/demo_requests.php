@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="<?= app_lang() ?>">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Permintaan Demo | Velano Super Global Admin</title>
@@ -15,6 +15,7 @@
     <span class="badge rounded-pill text-bg-success">Super Global Admin</span>
   </span>
   <span class="small d-flex align-items-center gap-3">
+    <?php $this->load->view('admin/layout/lang_switch'); ?>
     <a href="<?= site_url('platform/companies') ?>" class="btn btn-sm btn-light"><i class="bi bi-buildings me-1"></i>Perusahaan</a>
     <span class="text-gray d-none d-sm-inline"><i class="bi bi-person-circle me-1"></i><?= html_escape($me['name']) ?></span>
     <a href="<?= site_url('admin/auth/logout') ?>" class="btn btn-sm btn-outline-danger"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>

@@ -1,16 +1,22 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="<?= function_exists('app_lang') ? app_lang() : 'id' ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minta Demo / Uji Coba - Velano</title>
     <link rel="icon" type="image/png" href="<?= base_url('assets/admin/img/favicon-64.png') ?>">
     <link rel="preload" as="image" href="<?= base_url('assets/admin/img/logo-sm.png') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/public/css/trial.css') ?>?v=1">
+    <link rel="stylesheet" href="<?= base_url('assets/public/css/trial.css') ?>?v=2">
 </head>
 <body>
 <div class="at-login-wrap">
     <div class="at-login-card" style="max-width:520px;">
+        <?php $lg = function_exists('app_lang') ? app_lang() : 'id'; ?>
+        <div class="at-lang" role="group" aria-label="Language">
+            <a href="<?= site_url('lang/id') ?>"<?= $lg === 'id' ? ' class="active" aria-current="true"' : '' ?>>ID</a>
+            <span>|</span>
+            <a href="<?= site_url('lang/en') ?>"<?= $lg === 'en' ? ' class="active" aria-current="true"' : '' ?>>EN</a>
+        </div>
         <div class="text-center">
             <div class="at-login-logo"><img src="<?= base_url('assets/admin/img/logo-sm.png') ?>" alt="Velano" width="150" height="100" decoding="async"></div>
 

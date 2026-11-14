@@ -1363,6 +1363,12 @@
 			} catch (e) {}
 			if (lang !== "id" && lang !== "en")
 				lang = /^id\b/i.test(navigator.language || "") ? "id" : "en";
+			function setLangCookie(c) {
+				try {
+					document.cookie = "lang=" + c + ";path=/;max-age=31536000;samesite=lax";
+				} catch (e) {}
+			}
+			setLangCookie(lang);
 			function t(s) {
 				return lang === "en" && EN[s] !== undefined ? EN[s] : s;
 			}
@@ -1664,6 +1670,7 @@
 				try {
 					localStorage.setItem("lang", l);
 				} catch (e) {}
+				setLangCookie(l);
 				document.documentElement.lang = l;
 				var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
 					acceptNode: function (n) {

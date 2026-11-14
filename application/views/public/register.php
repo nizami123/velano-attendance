@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="<?= app_lang() ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,7 @@
 <body>
 <div class="at-login-wrap">
     <div class="at-login-card" style="max-width:520px;">
+        <div class="text-end mb-1"><?php $this->load->view('admin/layout/lang_switch'); ?></div>
         <div class="text-center">
             <div class="at-login-logo"><img src="<?= base_url('assets/admin/img/logo.png') ?>" alt="Velano" style="width:100%;height:100%;object-fit:contain;"></div>
             <h5 class="fw-bold mb-0">Coba Velano Gratis 7 Hari</h5>

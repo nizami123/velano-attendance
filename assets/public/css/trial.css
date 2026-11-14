@@ -28,3 +28,7 @@ textarea.form-control{resize:vertical;min-height:80px}
 .btn-at-primary:hover,.btn-at-primary:focus{background:var(--at-primary-dark);border-color:var(--at-primary-dark);color:#fff}
 .py-2{padding-top:.5rem;padding-bottom:.5rem}
 @media(max-width:480px){.at-login-card{padding:24px 18px}}
+.at-lang{position:absolute;top:12px;right:16px;font-size:.8125rem;color:var(--at-gray)}
+.at-lang a{text-decoration:none;color:var(--at-gray);padding:0 3px}
+.at-lang a.active{color:var(--at-primary-dark);font-weight:700}
+.at-lang span{margin:0 1px}
