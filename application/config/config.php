@@ -23,7 +23,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://attendix.siternal.my.id/';
+$config['base_url'] = 'https://velano.my.id/';
+// Ikuti host & skema (http/https) yang benar-benar dipakai pengunjung, tapi hanya untuk host yang diizinkan,
+// supaya CSS/gambar tidak gagal dimuat saat halaman dibuka lewat www./http/domain lain.
+$_at_allowed = array('velano.my.id', 'www.velano.my.id', 'localhost', '127.0.0.1');
+$_at_host = isset($_SERVER['HTTP_HOST']) ? strtolower(preg_replace('/:[0-9]+$/', '', (string) $_SERVER['HTTP_HOST'])) : '';
+if ($_at_host !== '' && in_array($_at_host, $_at_allowed, true)) {
+	$_at_https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+		|| (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower((string) $_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
+		|| (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443);
+	$_at_dir = rtrim(dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '/'), '/');
+	$config['base_url'] = ($_at_https ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_at_dir . '/';
+}
+unset($_at_allowed, $_at_host, $_at_https, $_at_dir);
 
 /*
 |--------------------------------------------------------------------------

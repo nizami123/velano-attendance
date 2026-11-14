@@ -13,8 +13,7 @@ class Trial extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();
-        $this->load->library('session');
+        $this->load->library('session'); // database baru dibuka saat form dikirim (GET tidak butuh DB)
         $this->load->helper(array('url', 'form', 'response', 'wa'));
         $this->load->model('Demo_request_model');
     }
@@ -31,6 +30,7 @@ class Trial extends CI_Controller
         }
 
         if ($this->input->method() === 'post') {
+            $this->load->database();
             $in = array(
                 'name'           => trim((string) $this->input->post('name')),
                 'company_name'   => trim((string) $this->input->post('company_name')),

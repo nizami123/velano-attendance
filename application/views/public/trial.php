@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minta Demo / Uji Coba - Velano</title>
-    <link rel="icon" type="image/png" href="<?= base_url('assets/admin/img/logo.png') ?>">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="<?= base_url('assets/admin/css/admin.css') ?>">
+    <link rel="icon" type="image/png" href="<?= base_url('assets/admin/img/favicon-64.png') ?>">
+    <link rel="preload" as="image" href="<?= base_url('assets/admin/img/logo-sm.png') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/public/css/trial.css') ?>?v=1">
 </head>
 <body>
 <div class="at-login-wrap">
     <div class="at-login-card" style="max-width:520px;">
         <div class="text-center">
-            <div class="at-login-logo"><img src="<?= base_url('assets/admin/img/logo.png') ?>" alt="Velano" style="width:100%;height:100%;object-fit:contain;"></div>
+            <div class="at-login-logo"><img src="<?= base_url('assets/admin/img/logo-sm.png') ?>" alt="Velano" width="150" height="100" decoding="async"></div>
 
         <?php if (!empty($done)): ?>
             <h5 class="fw-bold mb-2 mt-2">Terima kasih!</h5>
