@@ -52,16 +52,22 @@ class Companies extends MY_Platform_Controller
         $contactEmail = strtolower(trim((string) $this->input->post('contact_email')));
         $contactPhone = trim((string) $this->input->post('contact_phone'));
         $maxEmp = (int) $this->input->post('max_employees');
-        $maxOff = (int) $this->input->post('max_offices');
         $validUntil = trim((string) $this->input->post('valid_until'));
         $status = $this->input->post('status') === 'SUSPENDED' ? 'SUSPENDED' : 'ACTIVE';
 
         if (!isset(Company_model::$plans[$plan])) return $this->json(array('success' => false, 'message' => 'Paket tidak valid'), 422);
+        // Paket yang belum dijual (mis. Business - segera hadir) tidak bisa dipilih, kecuali perusahaan itu memang sudah memakainya.
+        if (empty(Company_model::$plans[$plan]['available'])) {
+            $current = $id > 0 ? $this->Company_model->getById($id) : null;
+            if (!$current || $current['plan'] !== $plan) {
+                return $this->json(array('success' => false, 'message' => 'Paket ' . Company_model::$plans[$plan]['label'] . ' belum tersedia'), 422);
+            }
+        }
+        if ($maxEmp < 1) return $this->json(array('success' => false, 'message' => 'Batas karyawan minimal 1'), 422);
         if ($name === '') return $this->json(array('success' => false, 'message' => 'Nama perusahaan wajib diisi'), 422);
         if ($contactEmail !== '' && !filter_var($contactEmail, FILTER_VALIDATE_EMAIL)) {
             return $this->json(array('success' => false, 'message' => 'Format email kontak tidak valid'), 422);
         }
-        if ($maxEmp < 1 || $maxOff < 1) return $this->json(array('success' => false, 'message' => 'Kuota karyawan & kantor minimal 1'), 422);
         if ($validUntil !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $validUntil)) {
             return $this->json(array('success' => false, 'message' => 'Format tanggal aktif sampai tidak valid'), 422);
         }
@@ -85,7 +91,7 @@ class Companies extends MY_Platform_Controller
             try {
                 list($cid, ) = $this->Company_model->createWithAdmin(array(
                     'company_name' => $name, 'admin_name' => $ownerName, 'email' => $ownerEmail,
-                    'phone' => $contactPhone, 'password' => $ownerPass, 'plan' => $plan, 'valid_days' => 0,
+                    'phone' => $contactPhone, 'password' => $ownerPass, 'plan' => $plan, 'max_employees' => $maxEmp, 'valid_days' => 0,
                     'office_name' => trim((string) $this->input->post('office_name')) ?: 'Kantor Pusat',
                     'office_address' => '', 'latitude' => null, 'longitude' => null,
                     'timezone' => strtoupper(trim((string) $this->input->post('timezone'))),
@@ -99,7 +105,7 @@ class Companies extends MY_Platform_Controller
                 'contact_name'  => $contactName !== '' ? $contactName : $ownerName,
                 'contact_email' => $contactEmail !== '' ? $contactEmail : $ownerEmail,
                 'contact_phone' => $contactPhone !== '' ? $contactPhone : null,
-                'plan' => $plan, 'status' => $status, 'max_employees' => $maxEmp, 'max_offices' => $maxOff,
+                'plan' => $plan, 'status' => $status, 'max_employees' => $maxEmp,
                 'valid_until' => $validUntilSql,
             ));
             return $this->json(array('success' => true, 'message' => 'Perusahaan dibuat', 'id' => $cid));
@@ -131,7 +137,7 @@ class Companies extends MY_Platform_Controller
             'contact_name' => $contactName !== '' ? $contactName : null,
             'contact_email' => $contactEmail !== '' ? $contactEmail : null,
             'contact_phone' => $contactPhone !== '' ? $contactPhone : null,
-            'plan' => $plan, 'status' => $status, 'max_employees' => $maxEmp, 'max_offices' => $maxOff,
+            'plan' => $plan, 'status' => $status, 'max_employees' => $maxEmp,
             'valid_until' => $validUntilSql,
         ));
         $this->json(array('success' => true, 'message' => 'Perusahaan tersimpan', 'id' => $id));

@@ -58,9 +58,8 @@
     <hr>
     <div class="row g-2">
       <div class="col-md-4"><label class="form-label small fw-bold">Paket</label>
-        <select class="form-select" name="plan" id="plan"><?php foreach ($plans as $k => $p): ?><option value="<?= $k ?>" data-e="<?= $p['max_employees'] ?>" data-o="<?= $p['max_offices'] ?>"><?= html_escape($p['label']) ?></option><?php endforeach; ?></select></div>
-      <div class="col-md-4"><label class="form-label small fw-bold">Maks. karyawan</label><input class="form-control" type="number" min="1" name="max_employees" id="me" required></div>
-      <div class="col-md-4"><label class="form-label small fw-bold">Maks. kantor</label><input class="form-control" type="number" min="1" name="max_offices" id="mo" required></div>
+        <select class="form-select" name="plan" id="plan"><?php foreach ($plans as $k => $p): ?><option value="<?= $k ?>"><?= html_escape($p['label']) ?></option><?php endforeach; ?></select></div>
+      <div class="col-md-4"><label class="form-label small fw-bold">Maks. karyawan <span class="text-gray fw-normal">(sesuai yang dibayar)</span></label><input class="form-control" type="number" min="1" name="max_employees" id="me" required></div>
       <div class="col-md-6"><label class="form-label small fw-bold">Aktif sampai <span class="text-gray fw-normal">(kosong = tanpa batas)</span></label><input class="form-control" type="date" name="valid_until" id="vu"></div>
       <div class="col-md-6"><label class="form-label small fw-bold">Status</label>
         <select class="form-select" name="status" id="status"><option value="ACTIVE">Aktif</option><option value="SUSPENDED">Ditangguhkan</option></select></div>
@@ -129,7 +128,7 @@ function render() {
     const st = c.usable ? '<span class="badge bg-success">Aktif</span>' : (c.status === 'SUSPENDED' ? '<span class="badge bg-danger">Ditangguhkan</span>' : '<span class="badge bg-warning text-dark">Kedaluwarsa</span>');
     return `<tr><td><b>${esc(c.name)}</b><div class="text-gray">${esc(c.code)} · dibuat ${esc((c.created_at || '').slice(0,10))}</div></td>
       <td>${esc(c.owner_name)}<div class="text-gray">${esc(c.owner_email)}</div></td><td>${esc(c.plan)}</td>
-      <td>${c.office_count}/${c.max_offices}</td><td>${c.employee_count}/${c.max_employees}</td><td>${left}</td><td>${st}</td>
+      <td>${c.office_count}</td><td>${c.employee_count}/${c.max_employees}</td><td>${left}</td><td>${st}</td>
       <td class="text-end text-nowrap">
         <button class="btn btn-sm btn-light" title="Edit" data-a="edit" data-id="${c.id}"><i class="bi bi-pencil"></i></button>
         <button class="btn btn-sm btn-light" title="Perpanjang 30 hari" data-a="extend" data-id="${c.id}">+30 hr</button>
@@ -156,8 +155,6 @@ $('rows').addEventListener('click', async e => {
   const r = await post(a + '/' + id, new FormData());
   toast(r.success ? 'Berhasil' : (r.message || 'Gagal')); load();
 });
-function planDefaults() { const o = $('plan').selectedOptions[0]; $('me').value = o.dataset.e; $('mo').value = o.dataset.o; }
-$('plan').addEventListener('change', planDefaults);
 async function openForm(id) {
   const f = $('f'); f.reset(); $('id').value = '';
   const isNew = !id;
@@ -166,13 +163,13 @@ async function openForm(id) {
   $('on').required = $('oe').required = $('op').required = isNew;
   $('opl').textContent = isNew ? 'Password awal *' : 'Reset password (opsional)';
   $('ownerHint').textContent = isNew ? '- akun ini dipakai admin perusahaan untuk login' : '- kosongkan bila tidak diubah';
-  if (isNew) { f.plan.value = 'TRIAL'; planDefaults(); f.status.value = 'ACTIVE'; modal.show(); return; }
+  if (isNew) { f.plan.value = 'TRIAL'; f.max_employees.value = 25; f.status.value = 'ACTIVE'; modal.show(); return; }
   const r = await (await fetch(U('detail/' + id))).json();
   if (!r.success) return toast(r.message || 'Gagal memuat');
   const c = r.data, o = r.owner || {};
   $('id').value = c.id;
   f.name.value = c.name; f.code.value = c.code; f.contact_name.value = c.contact_name || ''; f.contact_email.value = c.contact_email || ''; f.contact_phone.value = c.contact_phone || '';
-  f.plan.value = c.plan; f.max_employees.value = c.max_employees; f.max_offices.value = c.max_offices; f.status.value = c.status;
+  f.plan.value = c.plan; f.max_employees.value = c.max_employees; f.status.value = c.status;
   f.valid_until.value = c.valid_until ? c.valid_until.slice(0, 10) : '';
   f.owner_name.value = o.name || ''; f.owner_email.value = o.email || '';
   modal.show();

@@ -10,12 +10,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Company_model extends CI_Model
 {
+    /**
+     * Paket langganan. Paket hanya membedakan FITUR. Batas jumlah karyawan TIDAK ditentukan paket, melainkan
+     * diinput per perusahaan oleh Super Global Admin (companies.max_employees; tambah karyawan = bayar dulu).
+     * Jumlah kantor tidak dibatasi.
+     *  - price     : harga per karyawan aktif per bulan (rupiah); null = kustom
+     *  - available : FALSE = belum dijual (coming soon), tidak bisa dipilih di panel platform
+     *  - features  : fitur tambahan per paket (lihat hasFeature). Fitur dasar (absensi, tracking, shift,
+     *                pengajuan, pengiriman, laporan) ada di semua paket.
+     * Business menambah perhitungan gaji & PPh 21 (modulnya belum dibuat).
+     */
     public static $plans = array(
-        'TRIAL'      => array('label' => 'Uji Coba 14 Hari', 'max_employees' => 25,    'max_offices' => 3),
-        'STARTER'    => array('label' => 'Starter',          'max_employees' => 50,    'max_offices' => 3),
-        'BUSINESS'   => array('label' => 'Business',         'max_employees' => 250,   'max_offices' => 20),
-        'ENTERPRISE' => array('label' => 'Enterprise',       'max_employees' => 100000, 'max_offices' => 1000),
+        'TRIAL'      => array('label' => 'Uji Coba 7 Hari',         'price' => 0,     'available' => true,  'features' => array('payroll' => false, 'pph21' => false)),
+        'STARTER'    => array('label' => 'Starter',                 'price' => 5000,  'available' => true,  'features' => array('payroll' => false, 'pph21' => false)),
+        'BUSINESS'   => array('label' => 'Business (Segera Hadir)', 'price' => 10000, 'available' => false, 'features' => array('payroll' => true,  'pph21' => true)),
+        'ENTERPRISE' => array('label' => 'Enterprise (Kustom)',     'price' => null,  'available' => true,  'features' => array('payroll' => true,  'pph21' => true)),
     );
+
+    /** Apakah paket perusahaan ini memiliki fitur tertentu ('payroll', 'pph21'). Dipakai untuk membatasi fitur per paket. */
+    public static function hasFeature($company, string $feature): bool
+    {
+        $plan = is_array($company) ? ($company['plan'] ?? '') : (string) $company;
+        return !empty(self::$plans[$plan]['features'][$feature]);
+    }
+
+    /** Lama uji coba default (hari). */
+    const TRIAL_DAYS = 7;
+
+    /** Batas karyawan awal bila belum diinput Super Global Admin (mis. pendaftaran mandiri). */
+    const DEFAULT_MAX_EMPLOYEES = 25;
 
     public function getById(int $id)
     {
@@ -48,12 +71,7 @@ class Company_model extends CI_Model
         return array_map('intval', array_column($rows, 'id'));
     }
 
-    public function countOffices(int $companyId): int
-    {
-        return (int) $this->db->where('company_id', $companyId)->count_all_results('offices');
-    }
-
-    /** Karyawan + driver (non-admin) yang berstatus ACTIVE dihitung ke kuota paket. */
+    /** Karyawan + driver (non-admin) yang berstatus ACTIVE dihitung ke batas karyawan perusahaan. */
     public function countEmployees(int $companyId): int
     {
         return (int) $this->db->where('company_id', $companyId)
@@ -82,15 +100,14 @@ class Company_model extends CI_Model
 
     /**
      * Daftar perusahaan baru + Super Admin pertamanya + satu kantor awal, dalam satu transaksi.
-     * $in: company_name, admin_name, email, phone, password, plan(opsional), valid_days(opsional),
+     * $in: company_name, admin_name, email, phone, password, plan(opsional), max_employees(opsional), valid_days(opsional),
      *      office_name, office_address, latitude, longitude
      * @return array(int companyId, int adminId)
      */
     public function createWithAdmin(array $in): array
     {
         $plan = isset(self::$plans[$in['plan'] ?? 'TRIAL']) ? ($in['plan'] ?? 'TRIAL') : 'TRIAL';
-        $limits = self::$plans[$plan];
-        $days = isset($in['valid_days']) ? (int) $in['valid_days'] : 14;
+        $days = isset($in['valid_days']) ? (int) $in['valid_days'] : self::TRIAL_DAYS;
         $now = now_datetime();
 
         $this->db->trans_start();
@@ -102,9 +119,8 @@ class Company_model extends CI_Model
             'contact_email' => $in['email'],
             'contact_phone' => $in['phone'] ?: null,
             'plan'          => $plan,
+            'max_employees' => max(1, (int) ($in['max_employees'] ?? self::DEFAULT_MAX_EMPLOYEES)),
             'status'        => 'ACTIVE',
-            'max_employees' => $limits['max_employees'],
-            'max_offices'   => $limits['max_offices'],
             'valid_until'   => $days > 0 ? date('Y-m-d H:i:s', strtotime("+{$days} days")) : null,
             'created_at'    => $now,
         ));

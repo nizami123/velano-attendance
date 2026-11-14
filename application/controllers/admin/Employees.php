@@ -76,7 +76,7 @@ class Employees extends MY_Admin_Controller
         if (!$this->canAccessOffice($officeId)) {
             return $this->json(array('success' => false, 'message' => 'Anda hanya dapat mengelola karyawan di kantor yang menjadi akses Anda'), 403);
         }
-        // Kuota karyawan paket: berlaku untuk karyawan baru / yang diaktifkan.
+        // Batas karyawan (diatur Super Global Admin): berlaku untuk karyawan baru / yang diaktifkan.
         $this->load->model('Company_model');
         $max = (int) $this->company['max_employees'];
         if ($status === 'ACTIVE') {
@@ -139,7 +139,7 @@ class Employees extends MY_Admin_Controller
         if (!$emp || !in_array($emp['role'], $this->roles, true) || (!$this->canAccessOffice($emp['office_id']))) {
             return $this->json(array('success' => false, 'message' => 'Anda tidak berwenang atas data ini'), 403);
         }
-        // Mengaktifkan kembali karyawan juga harus mengikuti kuota paket.
+        // Mengaktifkan kembali karyawan juga harus mengikuti batas karyawan.
         if ($emp['status'] !== 'ACTIVE') {
             $this->load->model('Company_model');
             $max = (int) $this->company['max_employees'];

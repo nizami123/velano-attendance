@@ -8,7 +8,7 @@
 --
 -- PERAN:
 --   * Super Global Admin  : tabel `global_admins` (pemilik layanan). Satu-satunya yang boleh
---                           CRUD data master perusahaan (nama, paket, kuota, masa aktif).
+--                           CRUD data master perusahaan (nama, paket, batas karyawan, masa aktif).
 --   * SUPER_ADMIN         : tabel `employees`, role SUPER_ADMIN  -> admin tiap perusahaan.
 --   * ADMIN_KANTOR        : tabel `employees`, role ADMIN_KANTOR -> admin per kantor
 --                           (kantornya diatur lewat tabel `admin_offices`).
@@ -63,9 +63,8 @@ CREATE TABLE `companies` (
   `contact_email` varchar(150) DEFAULT NULL,
   `contact_phone` varchar(30) DEFAULT NULL,
   `plan` enum('TRIAL','STARTER','BUSINESS','ENTERPRISE') NOT NULL DEFAULT 'TRIAL',
-  `status` enum('ACTIVE','SUSPENDED') NOT NULL DEFAULT 'ACTIVE',
   `max_employees` int(11) NOT NULL DEFAULT 25,
-  `max_offices` int(11) NOT NULL DEFAULT 3,
+  `status` enum('ACTIVE','SUSPENDED') NOT NULL DEFAULT 'ACTIVE',
   `valid_until` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL,

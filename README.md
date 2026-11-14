@@ -40,8 +40,8 @@ Langkah instalasi:
 
 | Peran                            | Tabel                                          | Login                                       | Yang boleh dilihat / dikelola                                                                                                                                         |
 | -------------------------------- | ---------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Super Global Admin**           | `global_admins` (terpisah, 1 baris awal)       | `/admin/auth/login` → `/platform/companies` | **Satu-satunya yang CRUD Master Perusahaan** (nama, kode, kontak, paket, kuota, masa aktif, status, Super Admin-nya). Tidak melihat data absensi perusahaan mana pun. |
-| **Super Admin** (per perusahaan) | `employees` (`SUPER_ADMIN`)                    | `/admin/auth/login` → `/admin/dashboard`    | Semua kantor, admin, karyawan, shift, libur, laporan **milik perusahaannya saja**. Tidak bisa mengubah data perusahaan (paket/kuota/masa aktif).                      |
+| **Super Global Admin**           | `global_admins` (terpisah, 1 baris awal)       | `/admin/auth/login` → `/platform/companies` | **Satu-satunya yang CRUD Master Perusahaan** (nama, kode, kontak, paket, batas karyawan, masa aktif, status, Super Admin-nya). Tidak melihat data absensi perusahaan mana pun. |
+| **Super Admin** (per perusahaan) | `employees` (`SUPER_ADMIN`)                    | `/admin/auth/login` → `/admin/dashboard`    | Semua kantor, admin, karyawan, shift, libur, laporan **milik perusahaannya saja**. Tidak bisa mengubah data perusahaan (paket/batas karyawan/masa aktif).                      |
 | **Admin Kantor**                 | `employees` (`ADMIN_KANTOR`) + `admin_offices` | sama                                        | Hanya kantor yang diberikan Super Admin (boleh >1). Tidak bisa Master Kantor / User Admin.                                                                            |
 | Karyawan / Driver                | `employees`                                    | Aplikasi Android / PWA                      | Hanya datanya sendiri.                                                                                                                                                |
 
@@ -54,7 +54,7 @@ Langkah instalasi:
 **Segera ganti** lewat tombol **Akun Saya** di panel. Lupa password? Jalankan di server:
 `php index.php tools reset_global_admin_password PasswordBaruMin8`
 
-**Alur berlangganan:** Super Global Admin → _Perusahaan Baru_ (isi nama perusahaan, paket, kuota, masa aktif, dan akun Super Admin perusahaan)
+**Alur berlangganan:** Super Global Admin → _Perusahaan Baru_ (isi nama perusahaan, paket, batas karyawan, masa aktif, dan akun Super Admin perusahaan)
 → kirim email/password itu ke pelanggan → Super Admin perusahaan membuat kantor, Admin Kantor, dan karyawan sendiri.
 Aksi lain: edit, perpanjang +30 hari, tangguhkan/aktifkan, reset password Super Admin, **hapus permanen** (wajib mengetik kode perusahaan).
 Perusahaan yang ditangguhkan / kedaluwarsa otomatis tidak bisa login (web & Android) dan token lamanya ditolak.

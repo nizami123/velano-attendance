@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Pendaftaran mandiri perusahaan baru (coba gratis 14 hari).
+ * Pendaftaran mandiri perusahaan baru (coba gratis 7 hari).
  * NONAKTIF secara default: data master perusahaan hanya boleh dibuat oleh Super Global Admin
  * (panel /platform/companies). Aktifkan kembali dengan  $config['allow_self_register'] = TRUE;  di config.php.
  * Bila aktif: membuat perusahaan + 1 kantor awal + akun SUPER_ADMIN, lalu langsung login.

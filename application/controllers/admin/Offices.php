@@ -87,12 +87,6 @@ class Offices extends MY_Admin_Controller
         if ($id > 0 && !$this->Admin_office_model->getById($id, $this->companyId())) {
             return $this->json(array('success' => false, 'message' => 'Kantor tidak ditemukan'), 404);
         }
-        // Kuota paket
-        $this->load->model('Company_model');
-        if ($id <= 0 && $this->Company_model->countOffices($this->companyId()) >= (int) $this->company['max_offices']) {
-            return $this->json(array('success' => false, 'message' => 'Kuota kantor paket Anda (' . (int) $this->company['max_offices'] . ') sudah penuh. Upgrade paket untuk menambah kantor.'), 422);
-        }
-
         $data = array(
             'code' => $code,
             'name' => $name,

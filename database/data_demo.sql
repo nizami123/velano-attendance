@@ -44,8 +44,8 @@ DELETE FROM companies                 WHERE id IN (SELECT id FROM tmp_demo_co);
 DROP TEMPORARY TABLE IF EXISTS tmp_demo_co;
 
 -- ---------- 2. Perusahaan (paket TRIAL, aktif 30 hari dari sekarang) ----------
-INSERT INTO companies (code, name, contact_name, contact_email, contact_phone, plan, status, max_employees, max_offices, valid_until, created_at)
-VALUES ('DEMO', 'PT Demo Maju Jaya', 'Admin Demo', 'admin@example.com', '081234567890', 'TRIAL', 'ACTIVE', 25, 3, NOW() + INTERVAL 30 DAY, NOW());
+INSERT INTO companies (code, name, contact_name, contact_email, contact_phone, plan, status, max_employees, valid_until, created_at)
+VALUES ('DEMO', 'PT Demo Maju Jaya', 'Admin Demo', 'admin@example.com', '081234567890', 'TRIAL', 'ACTIVE', 25, NOW() + INTERVAL 30 DAY, NOW());
 SET @c := LAST_INSERT_ID();
 
 -- ---------- 3. Kantor (Surabaya & Sidoarjo = WIB, Makassar = WITA) ----------
@@ -214,8 +214,8 @@ SELECT @dlv, @driver,
 FROM (SELECT 0 n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) t;
 
 -- ---------- 12. Perusahaan kedua (DEMO2) - untuk menguji isolasi data antar perusahaan ----------
-INSERT INTO companies (code, name, contact_name, contact_email, contact_phone, plan, status, max_employees, max_offices, valid_until, created_at)
-VALUES ('DEMO2', 'CV Contoh Sejahtera', 'Bos Contoh', 'bos@contoh.id', '081300000001', 'STARTER', 'ACTIVE', 50, 3, NOW() + INTERVAL 365 DAY, NOW());
+INSERT INTO companies (code, name, contact_name, contact_email, contact_phone, plan, status, max_employees, valid_until, created_at)
+VALUES ('DEMO2', 'CV Contoh Sejahtera', 'Bos Contoh', 'bos@contoh.id', '081300000001', 'STARTER', 'ACTIVE', 50, NOW() + INTERVAL 365 DAY, NOW());
 SET @c2 := LAST_INSERT_ID();
 
 INSERT INTO offices (company_id, code, name, address, latitude, longitude, check_in_radius, check_out_radius, tracking_interval_seconds, status, created_at, timezone) VALUES
