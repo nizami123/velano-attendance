@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '163.223.227.38',
-	'username' => 'dewujosf_attendix',
+	'hostname' => '163.223.227.8',
+	'username' => 'smmmsqnq_attendance',
 	'password' => 'Lamongan@123',
-	'database' => 'dewujosf_attendix',
+	'database' => 'smmmsqnq_attendance',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
